@@ -2,6 +2,11 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.googleServices)
+    alias(libs.plugins.crashlytics)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.daggerHilt)
+    alias(libs.plugins.jetBrainsKotlinSerialization)
 }
 
 android {
@@ -40,7 +45,13 @@ android {
 }
 
 dependencies {
+    //Fireabase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation((libs.firebase.auth))
 
+    //AndroidX
+    implementation((libs.androidx.navigation.compose))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -49,6 +60,18 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.android.compose.material.icons)
+
+    //Hilt
+    implementation(libs.dagger.hilt)
+    implementation(libs.androidx.espresso.core)
+    kapt(libs.dagger.hilt.compiler)
+    implementation(libs.dagger.hilt.navigation.compose)
+
+
+    implementation(libs.kotlin.serialization)
+
+    //Junit
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -56,4 +79,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+kapt{
+    correctErrorTypes = true
 }

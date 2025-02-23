@@ -8,6 +8,13 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.0"
 composeBom = "2024.04.01"
+firebaseBom = "33.9.0"
+services="4.4.2"
+crashlytics="3.0.3"
+navigationCompose = "2.8.7"
+daggerHilt = "2.51.1"
+daggerHiltCompose = "1.2.0"
+kotlinSerialization = "1.6.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -24,9 +31,29 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+android-compose-material-icons = {module="androidx.compose.material:material-icons-extended"}
+
+firebase-bom = { module= "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics = { module= "com.google.firebase:firebase-crashlytics" }
+firebase-auth = { module= "com.google.firebase:firebase-auth-ktx" }
+firebase-firestore = { module= "com.google.firebase:firebase-firestore-ktx" }
+
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref="navigationCompose" }
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref="kotlinSerialization" }
+
+
+dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref="daggerHilt" }
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref="daggerHilt" }
+dagger-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref="daggerHiltCompose" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "services" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
+kapt = { id = "org.jetbrains.kotlin.kapt"}
+daggerHilt= { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
+jetBrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 

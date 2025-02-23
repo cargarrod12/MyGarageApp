@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.application.carlosgarro.mygarageapp" />
+                  <option name="mobileSdkAppId" value="1:327745154191:android:a81b6e0bec64b024b354fa" />
+                  <option name="projectId" value="mygarageapp-1cb21" />
+                  <option name="projectNumber" value="327745154191" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
