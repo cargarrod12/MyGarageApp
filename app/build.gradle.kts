@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.googleServices)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.daggerHilt)
     alias(libs.plugins.jetBrainsKotlinSerialization)
 }
@@ -33,6 +34,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -49,6 +51,17 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation((libs.firebase.auth))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.analytics)
+
+    //Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.androidx.runtime.livedata)
+    ksp(libs.room.compiler)
+
+    //Coil
+    implementation(libs.coil)
 
     //AndroidX
     implementation((libs.androidx.navigation.compose))
@@ -79,6 +92,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Kotlin
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 
 kapt{

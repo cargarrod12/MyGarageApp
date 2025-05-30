@@ -10,3 +10,13 @@ object SignUp
 
 @Serializable
 data class Home(val name: String)
+
+@Serializable
+data class Vehiculo(val id: Long)
+
+@Serializable
+data class Historial(val id: Long, val vehiculo: String)
+
+
+@Serializable
+data class Notificacion(val id: Long, val vehiculo: String)

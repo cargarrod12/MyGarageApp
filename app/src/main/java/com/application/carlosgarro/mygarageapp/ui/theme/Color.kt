@@ -16,6 +16,7 @@ val Black = Color(0xFF121212)
 val Blue = Color(0xFF2953EA)
 val BackgroundButton = Color(0xFF111111)
 val ShapeButton = Color(0xFF5D5D5D)
+val Red = Color(0xFFF6073A)
 
 val SelectedField = Color(0xFFFFFFFF)
 val UnselectedField = Color(0xFFC0C0C0)

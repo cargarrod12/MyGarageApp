@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
 import com.application.carlosgarro.mygarageapp.ui.theme.MyGarageAppTheme
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth

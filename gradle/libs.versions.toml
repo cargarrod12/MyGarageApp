@@ -1,5 +1,6 @@
 [versions]
-agp = "8.8.0"
+agp = "8.8.2"
+desugar_jdk_libs = "2.1.5"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -8,16 +9,23 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.0"
 composeBom = "2024.04.01"
-firebaseBom = "33.9.0"
+firebaseBom = "33.13.0"
 services="4.4.2"
 crashlytics="3.0.3"
 navigationCompose = "2.8.7"
 daggerHilt = "2.51.1"
 daggerHiltCompose = "1.2.0"
 kotlinSerialization = "1.6.3"
+coil = "2.7.0"
+room = "2.6.0"
+ksp = "2.0.0-1.0.24"
+runtimeLivedata = "1.8.0"
 
 [libraries]
+
+#ANDROID
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -33,18 +41,31 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 android-compose-material-icons = {module="androidx.compose.material:material-icons-extended"}
 
+#FIREBASE
 firebase-bom = { module= "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module= "com.google.firebase:firebase-crashlytics" }
 firebase-auth = { module= "com.google.firebase:firebase-auth-ktx" }
 firebase-firestore = { module= "com.google.firebase:firebase-firestore-ktx" }
+firebase-analytics = { module= "com.google.firebase:firebase-analytics"}
+
+#ROOM
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
+
+
+
+coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref="navigationCompose" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref="kotlinSerialization" }
 
-
+#HILT
 dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref="daggerHilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref="daggerHilt" }
 dagger-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref="daggerHiltCompose" }
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 
 
 [plugins]
@@ -54,6 +75,7 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 googleServices = { id = "com.google.gms.google-services", version.ref = "services" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
 kapt = { id = "org.jetbrains.kotlin.kapt"}
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 daggerHilt= { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
 jetBrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 

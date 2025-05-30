@@ -56,8 +56,8 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit = {}) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("prueba@prueba.com") }
+    var password by remember { mutableStateOf("prueba") }
     var passwordVisible by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier

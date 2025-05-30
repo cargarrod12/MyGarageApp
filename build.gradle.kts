@@ -6,5 +6,6 @@ plugins {
     alias(libs.plugins.googleServices) apply false
     alias(libs.plugins.crashlytics) apply false
     alias(libs.plugins.daggerHilt) apply false
+    alias(libs.plugins.ksp) apply false
 
 }

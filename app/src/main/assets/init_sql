@@ -1,0 +1,9 @@
+INSERT INTO vehiculo (id, marca, modelo) VALUES (1, 'TOYOTA', 'COROLLA');
+INSERT INTO vehiculo (id, marca, modelo) VALUES (2, 'FORD', 'FOCUS');
+INSERT INTO vehiculo (id, marca, modelo) VALUES (3, 'HONDA', 'CIVIC');
+
+INSERT INTO usuario (email, nombre, clave) VALUES ('prueba@prueba.com', 'Prueba', 'prueba');
+
+-- Insertar vehículos personales
+INSERT INTO vehiculo_personal (id, usuarioEmail, vehiculoId, estado, anyo, kilometros, imagen)
+VALUES (1, 'prueba@prueba.com', 1, 'bueno', 2020, 10000, 'imagen1.jpg');
