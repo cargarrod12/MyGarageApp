@@ -2,13 +2,14 @@ package com.application.carlosgarro.mygarageapp.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import com.application.carlosgarro.mygarageapp.data.local.dao.ConsejoDAO
 import com.application.carlosgarro.mygarageapp.data.local.dao.MantenimientoDAO
 import com.application.carlosgarro.mygarageapp.data.local.dao.NotificacionDAO
 import com.application.carlosgarro.mygarageapp.data.local.dao.ReglaMantenimientoDAO
 import com.application.carlosgarro.mygarageapp.data.local.dao.VehiculoDAO
 import com.application.carlosgarro.mygarageapp.data.local.dao.VehiculoPersonalDAO
+import com.application.carlosgarro.mygarageapp.data.local.entity.ConsejoEntity
 import com.application.carlosgarro.mygarageapp.data.local.entity.MantenimientoEntity
 import com.application.carlosgarro.mygarageapp.data.local.entity.NotificacionEntity
 import com.application.carlosgarro.mygarageapp.data.local.entity.ReglaMantenimientoEntity
@@ -23,9 +24,10 @@ import com.application.carlosgarro.mygarageapp.data.local.entity.VehiculoPersona
         UsuarioEntity::class,
         MantenimientoEntity::class,
         NotificacionEntity::class,
-        ReglaMantenimientoEntity::class
+        ReglaMantenimientoEntity::class,
+        ConsejoEntity::class
                ],
-    version = 9,
+    version = 11,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -40,5 +42,7 @@ abstract  class LocalDataSource : RoomDatabase() {
     abstract fun reglaMantenimientoDAO(): ReglaMantenimientoDAO
 
     abstract fun notificacionDAO(): NotificacionDAO
+
+    abstract fun consejoDAO(): ConsejoDAO
 
 }

@@ -1,9 +1,11 @@
 package com.application.carlosgarro.mygarageapp.presentation.home
 
 
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,6 +36,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,15 +50,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.application.carlosgarro.mygarageapp.core.calcularProximosMantenimientos
 import com.application.carlosgarro.mygarageapp.domain.model.notificacion.NotificacionModel
+import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
 import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
-import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,6 +70,7 @@ fun HomeScreen(
     navigateToHistorial: (Long, String) -> Unit,
     navigateToHome: () -> Unit = {},
     navigateToMapa: () -> Unit = {},
+    navigateToEditarVehiculo: (Long) -> Unit = {}
     ) {
 
     val tabTitles = listOf("Resumen", "Mis Coches")
@@ -126,7 +132,17 @@ fun HomeScreen(
             Column(
                 modifier = Modifier.padding(padding)
             ) {
-                TabRow(selectedTabIndex = selectedTab) {
+                TabRow(
+                    selectedTabIndex = selectedTab,
+                    containerColor = Color.White,
+                    contentColor = Color.Blue,
+                    indicator = { tabPositions ->
+                        SecondaryIndicator(
+                            Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
+                            color = Color.Blue
+                        )
+                    }
+                ) {
                     tabTitles.forEachIndexed { index, title ->
                         Tab(
                             selected = selectedTab == index,
@@ -156,7 +172,7 @@ fun HomeScreen(
                     if (selectedTab == 0) {
                         ResumenTab(padding, listaVehiculosPersonales, navigateToVehiculo, navigateToHistorial)
                     } else {
-                        MisCochesTab(padding, listaVehiculosPersonales)
+                        MisCochesTab(padding, listaVehiculosPersonales, navigateToEditarVehiculo)
                     }
                 }
 
@@ -206,11 +222,23 @@ fun CocheCard(
                     .size(64.dp)
                     .background(Color.LightGray)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Image,
-                    contentDescription = "Imagen coche",
-                    modifier = Modifier.align(Alignment.Center)
-                )
+                if (vehiculo.imagen != null) {
+                    val bitmap = BitmapFactory.decodeByteArray(vehiculo.imagen, 0, vehiculo.imagen.size)
+                    bitmap?.let {
+                        Image(
+                            bitmap = it.asImageBitmap(),
+                            contentDescription = "Imagen seleccionada",
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                } else {
+                    // Si no hay imagen, mostramos un icono por defecto
+                    Icon(
+                        imageVector = Icons.Default.Image,
+                        contentDescription = "Imagen coche",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -224,9 +252,12 @@ fun CocheCard(
                 Text(vehiculo.kilometros.toString() + "Km")
                 Spacer(modifier = Modifier.height(4.dp))
                 Text("Proximos Mantenimientos:", color = Color.Blue)
-
-                mantenimientos.forEach {
-                    Text("- ${it.tipoServicio}: ${it.kilometrosProximoServicio}Km")
+                if (mantenimientos.isEmpty()) {
+                    Text("No hay mantenimientos pendientes")
+                }else {
+                    mantenimientos.forEach {
+                        Text("- ${it.tipoServicio}: ${it.kilometrosProximoServicio}Km")
+                    }
                 }
             }
         }

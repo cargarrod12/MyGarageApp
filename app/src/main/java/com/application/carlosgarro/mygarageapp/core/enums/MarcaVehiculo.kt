@@ -1,10 +1,36 @@
 package com.application.carlosgarro.mygarageapp.core.enums
 
-enum class MarcaVehiculo {
-    TOYOTA,
-    FORD,
-    HONDA,
-    BMW,
-    AUDI,
-    OTRO
+enum class MarcaVehiculo(private val texto: String) {
+    VOLVO("Volvo"),
+    VOLKSWAGEN("Volkswagen"),
+    TOYOTA("Toyota"),
+    TESLA("Tesla"),
+    SUZUKI("Suzuki"),
+    SUBARU("Subaru"),
+    RENAULT("Renault"),
+    PORSCHE("Porsche"),
+    PEUGEOT("Peugeot"),
+    OPEL("Opel"),
+    NISSAN("Nissan"),
+    MITSUBISHI("Mitsubishi"),
+    MERCEDES_BENZ("Mercedes-Benz"),
+    LEXUS("Lexus"),
+    LAND_ROVER("Land Rover"),
+    LAMBORGHINI("Lamborghini"),
+    KIA("Kia"),
+    JEEP("Jeep"),
+    JAGUAR("Jaguar"),
+    HYUNDAI("Hyundai"),
+    HONDA("Honda"),
+    FORD("Ford"),
+    FIAT("Fiat"),
+    FERRARI("Ferrari"),
+    DODGE("Dodge"),
+    CITROEN("Citroën"),
+    CHEVROLET("Chevrolet"),
+    BENTLEY("Bentley"),
+    BMW("BMW"),
+    AUDI("Audi"),
+    ALFA_ROMEO("Alfa Romeo");
+    override fun toString(): String = texto
 }

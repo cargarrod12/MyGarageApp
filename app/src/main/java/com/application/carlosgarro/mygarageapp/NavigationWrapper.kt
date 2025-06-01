@@ -1,5 +1,6 @@
 package com.application.carlosgarro.mygarageapp
 
+import EditarVehiculo
 import Historial
 import Home
 import Initial
@@ -9,9 +10,10 @@ import Notificacion
 import SignUp
 import Vehiculo
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.application.carlosgarro.mygarageapp.presentation.editavehiculo.EditarVehiculoScreen
 import com.application.carlosgarro.mygarageapp.presentation.historial.HistorialScreen
 import com.application.carlosgarro.mygarageapp.presentation.home.HomeScreen
 import com.application.carlosgarro.mygarageapp.presentation.initial.InitialScreen
@@ -56,11 +58,15 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
                 },
                 navigateToHome = { navHostController.navigate(Home(name = "")) },
                 navigateToMapa = { navHostController.navigate(Mapa) },
+                navigateToEditarVehiculo = { id ->
+                    navHostController.navigate(EditarVehiculo(id = id))
+                }
             )
         }
         composable<Vehiculo> { backStackEntry ->
             val id = backStackEntry.arguments?.getLong("id") ?: 0L
             VehiculoScreen(
+                id = id,
                 navigateToHome = { navHostController.navigate(Home(name = "")) },
                 navigateToHistorial = { idVehiculo: Long, nombreVehiculo: String ->
                     navHostController.navigate(Historial(id = idVehiculo, vehiculo = nombreVehiculo))
@@ -69,7 +75,9 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
                     navHostController.navigate(Notificacion(id = idVehiculo, vehiculo = nombreVehiculo))
                 },
                 navigateToMapa = { navHostController.navigate(Mapa) },
-                id = id,
+                navigateToEditarVehiculo = { id ->
+                    navHostController.navigate(EditarVehiculo(id = id))
+                }
             )
         }
 
@@ -100,6 +108,17 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
                 navigateToHome = { navHostController.navigate(Home(name = "")) },
                  navigateToMapa = {}
              )
+        }
+
+        composable<EditarVehiculo> {backStackEntry ->
+            val id = backStackEntry.arguments?.getLong("id") ?: 0L
+            EditarVehiculoScreen(
+                navigateToHome = { navHostController.navigate(Home(name = "")) },
+                navigateToMapa = { navHostController.navigate(Mapa) },
+                navigateToVehiculo = {navHostController.navigate(Vehiculo(id = id))
+                },
+                vehiculoId = id,
+            )
         }
 
     }

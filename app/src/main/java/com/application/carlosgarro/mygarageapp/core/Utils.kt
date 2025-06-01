@@ -11,7 +11,7 @@ fun calcularProximosMantenimientos(notificaciones: List<NotificacionModel>, kilo
     val proximosMantenimientos = mutableListOf<NotificacionModel>()
 
     for (notificacion in notificaciones) {
-        if (notificacion.kilometrosProximoServicio - kilometros < 20000) {
+        if (notificacion.kilometrosProximoServicio - kilometros < 4000) {
             proximosMantenimientos.add(notificacion)
         }
     }

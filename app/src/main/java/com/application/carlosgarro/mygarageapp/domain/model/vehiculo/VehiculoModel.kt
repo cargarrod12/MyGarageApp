@@ -1,8 +1,8 @@
 package com.application.carlosgarro.mygarageapp.domain.model.vehiculo
 
-import com.application.carlosgarro.mygarageapp.data.local.entity.VehiculoEntity
 import com.application.carlosgarro.mygarageapp.core.enums.MarcaVehiculo
 import com.application.carlosgarro.mygarageapp.core.enums.ModeloVehiculo
+import com.application.carlosgarro.mygarageapp.data.local.entity.VehiculoEntity
 
 data class VehiculoModel(
     val id: Long?,
@@ -10,7 +10,7 @@ data class VehiculoModel(
     var modelo: ModeloVehiculo
 ){
     override fun toString(): String {
-        return marca.name + " " + modelo.name
+        return "$marca $modelo"
     }
 }
 

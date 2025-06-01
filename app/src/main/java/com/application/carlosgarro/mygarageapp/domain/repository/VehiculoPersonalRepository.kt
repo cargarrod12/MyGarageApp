@@ -9,4 +9,6 @@ interface VehiculoPersonalRepository {
     suspend fun getVehiculosPersonalesByUsuario(usuarioEmail: String): List<VehiculoPersonalModel>
 
     suspend fun getVehiculoPersonalById(id: Long): VehiculoPersonalModel?
+
+    suspend fun deleteVehiculoPersonal(vehiculoId: Long): Boolean
 }

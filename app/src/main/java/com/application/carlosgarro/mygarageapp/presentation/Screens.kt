@@ -23,3 +23,7 @@ data class Notificacion(val id: Long, val vehiculo: String)
 
 @Serializable
 object Mapa
+
+
+@Serializable
+data class EditarVehiculo(val id: Long)

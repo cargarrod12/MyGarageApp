@@ -1,9 +1,26 @@
-INSERT INTO vehiculo (id, marca, modelo) VALUES (1, 'TOYOTA', 'COROLLA');
-INSERT INTO vehiculo (id, marca, modelo) VALUES (2, 'FORD', 'FOCUS');
-INSERT INTO vehiculo (id, marca, modelo) VALUES (3, 'HONDA', 'CIVIC');
-
-INSERT INTO usuario (email, nombre, clave) VALUES ('prueba@prueba.com', 'Prueba', 'prueba');
-
--- Insertar vehículos personales
-INSERT INTO vehiculo_personal (id, usuarioEmail, vehiculoId, estado, anyo, kilometros, imagen)
-VALUES (1, 'prueba@prueba.com', 1, 'bueno', 2020, 10000, 'imagen1.jpg');
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'CAMBIO_DE_ACEITE', 10000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'REVISION_DE_FRENOS', 20000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'CAMBIO_DE_BUJIAS', 40000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'ALINEACION_Y_BALANCEO', 15000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'CAMBIO_DE_FILTRO_DE_AIRE', 15000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'REVISION_DE_SUSPENSION', 30000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'LIQUIDO_DE_TRANSMISION', 50000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'REVISION_DE_LUCES', 12000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'LIMPIEZA_DEL_PARABRISAS', 8000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'INSPECCION_DEL_CINTURON_DE_DISTRIBUCION', 60000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'LIQUIDO_DE_FRENOS', 40000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'SISTEMA_DE_DIRECCION', 25000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'CAMBIO_DE_FILTRO_DE_COMBUSTIBLE', 20000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'REVISION_DEL_ALTERNADOR', 45000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'MANTENIMIENTO_DEL_AIRE_ACONDICIONADO', 30000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'REVISION_DE_MANGUERAS_Y_CORREAS', 35000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'CHEQUEO_DEL_SISTEMA_ELECTRICO', 20000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'COMPROBACION_DEL_CONSUMO_DE_COMBUSTIBLE', 15000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'LAVADO_Y_ENCERADO', 5000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'REVISION_DEL_SISTEMA_DE_SEGURIDAD', 30000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'SISTEMA_DE_ESCAPE', 40000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'MANTENIMIENTO_DE_BATERIA', 25000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'PRESION_DE_NEUMATICOS', 6000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'REVISION_DE_FRENOS', 18000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'CAMBIO_DE_BUJIAS', 35000);
+INSERT INTO regla_mantenimiento (vehiculoId, tipoServicio, intervalo) VALUES (31, 'REVISION_DEL_SISTEMA_DE_DIRECCION', 22000);

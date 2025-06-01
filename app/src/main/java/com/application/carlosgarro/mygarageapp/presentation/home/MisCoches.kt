@@ -10,18 +10,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material3.Divider
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 
 @Composable
-fun MisCochesTab(padding: PaddingValues, registros: List<VehiculoPersonalModel>) {
+fun MisCochesTab(padding: PaddingValues, registros: List<VehiculoPersonalModel>, navigateToEditarVehiculo : (Long) -> Unit) {
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -55,11 +55,12 @@ fun MisCochesTab(padding: PaddingValues, registros: List<VehiculoPersonalModel>)
                     Text(vehiculo.anyo.toString(), modifier = Modifier.weight(1f))
                     Text("${vehiculo.kilometros} KM", modifier = Modifier.weight(1f))
                     Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "Detalles",
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Editar Vehiculo",
+                        tint = Color.Gray,
                         modifier = Modifier
                             .weight(1f)
-                            .clickable { /* Mostrar detalles */ }
+                            .clickable { navigateToEditarVehiculo(vehiculo.id!!) }
                     )
                 }
             }

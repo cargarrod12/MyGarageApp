@@ -41,7 +41,18 @@ class VehiculoPersonalRepositoryImpl @Inject constructor(
         }catch (e: Exception){
             Log.e("VehiculoPersonalRepositoryImpl", "Error fetching vehiculo personal by id: ${e.message}")
         }
+
         return null
+    }
+
+    override suspend fun deleteVehiculoPersonal(vehiculoId: Long): Boolean {
+        try {
+            val result = vehiculoPersonalDao.deleteVehiculoPersonal(vehiculoId)
+            return result > 0
+        }catch (e: Exception){
+            Log.e("VehiculoPersonalRepositoryImpl", "Error deleting vehiculo personal: ${e.message}")
+        }
+        return false
     }
 
 

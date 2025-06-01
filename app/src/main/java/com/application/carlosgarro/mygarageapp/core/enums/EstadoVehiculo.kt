@@ -4,5 +4,6 @@ enum class EstadoVehiculo {
     NUEVO,
     USADO,
     EN_REPARACION,
-    DADO_DE_BAJA
+    DADO_DE_BAJA,
+    REVISAR
 }

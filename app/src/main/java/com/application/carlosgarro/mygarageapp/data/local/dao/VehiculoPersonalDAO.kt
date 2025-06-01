@@ -1,7 +1,6 @@
 package com.application.carlosgarro.mygarageapp.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
@@ -17,8 +16,8 @@ interface VehiculoPersonalDAO {
     @Upsert
     suspend fun insertVehiculoPersonal(vehiculoPersonal: VehiculoPersonalEntity): Long
 
-    @Delete
-    suspend fun deleteVehiculoPersonal(vehiculoPersonal: VehiculoPersonalEntity): Int
+    @Query("DELETE FROM vehiculo_personal WHERE id = :vehiculoId")
+    suspend fun deleteVehiculoPersonal(vehiculoId: Long): Int
 
     @Transaction
     @Query("SELECT * FROM vehiculo_personal WHERE usuarioEmail = :usuarioEmail")

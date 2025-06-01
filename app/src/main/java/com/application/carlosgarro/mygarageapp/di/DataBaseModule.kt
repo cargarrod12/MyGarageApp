@@ -21,12 +21,14 @@ class DataBaseModule {
     @Provides
     fun provideRoomDatabase(@ApplicationContext appContext: Context):  LocalDataSource{
 
-//        appContext.deleteDatabase("my_garage_database")
+        //Borrar base de datos
+//      appContext.deleteDatabase("my_garage_database")
+
         return Room.databaseBuilder(
             appContext,
             LocalDataSource::class.java, "my_garage_database"
         )
-            .fallbackToDestructiveMigration()
+//            .fallbackToDestructiveMigration()
             .createFromAsset("my_garage_database.db")
             .setJournalMode(RoomDatabase.JournalMode.TRUNCATE) // opcional, mejora logs
             .setQueryCallback({ sqlQuery, bindArgs ->
@@ -54,6 +56,10 @@ class DataBaseModule {
     @Singleton
     @Provides
     fun provideNotificacionDAO (db: LocalDataSource) = db.notificacionDAO()
+
+    @Singleton
+    @Provides
+    fun provideConsejoDAO (db: LocalDataSource) = db.consejoDAO()
 
 
 }

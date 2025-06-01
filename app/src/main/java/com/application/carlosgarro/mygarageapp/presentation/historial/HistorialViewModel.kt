@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.application.carlosgarro.mygarageapp.core.enums.TipoServicio
 import com.application.carlosgarro.mygarageapp.domain.model.Resource
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.MantenimientoModel
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.usecases.getMantenimientosByVehiculoPersonal
@@ -191,7 +190,8 @@ class HistorialViewModel @Inject constructor(
             vehiculoId: Long,
         ) {
             viewModelScope.launch {
-
+                Log.i("NUEVA ENTRADA HISTORIAL", "VehiculoId: $vehiculoId" +
+                        " TipoServicio: ${mantenmiento.tipoServicio}")
                 getReglaMantenimientoByVehiculoPersonalAndTipoServicio(
                     vehiculoId,
                     mantenmiento.tipoServicio
