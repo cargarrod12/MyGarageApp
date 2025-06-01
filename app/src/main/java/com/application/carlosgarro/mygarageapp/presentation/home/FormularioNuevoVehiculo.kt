@@ -1,5 +1,11 @@
 package com.application.carlosgarro.mygarageapp.presentation.home
 
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,8 +15,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -27,6 +35,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,25 +43,39 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.application.carlosgarro.mygarageapp.core.enums.EstadoVehiculo
-import com.application.carlosgarro.mygarageapp.core.enums.MarcaVehiculo
-import com.application.carlosgarro.mygarageapp.core.enums.ModeloVehiculo
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculo.VehiculoModel
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
+import com.application.carlosgarro.mygarageapp.presentation.components.SelectorImagen
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
 import com.application.carlosgarro.mygarageapp.ui.theme.Red
 
+
 @Composable
 fun FormularioNuevoCoche(
+    viewModel: ResumenViewModel,
     vehiculo: VehiculoPersonalModel,
     listaVehiculos: List<VehiculoModel>,
+    imagenUri: Uri?,
     onChange: () -> Unit,
     onGuardar: () -> Unit,
     onCancelar: () -> Unit
 ) {
+    val context = LocalContext.current
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let { viewModel.setImagenDesdeUri(context, it) }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -69,8 +92,29 @@ fun FormularioNuevoCoche(
         var kilometros by remember { mutableStateOf(vehiculo.kilometros.toString()) }
         var estado by remember { mutableStateOf(vehiculo.estado) }
 
+//        Button(
+//            onClick = { launcher.launch("image/*") },
+//            colors = ButtonDefaults.buttonColors(containerColor = Blue),
+//        ) {
+//            Text("Seleccionar Imagen")
+//        }
+//
+//        imagenUri?.let { Uri ->
+//            Image(
+//                painter = rememberAsyncImagePainter(Uri),
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .size(200.dp)
+//                    .clip(RoundedCornerShape(8.dp))
+//            )
+//        }
+        SelectorImagen(
+            imagenSeleccionada = viewModel.imagenSeleccionada.value,
+            onSeleccionarImagen = { launcher.launch("image/*") }
+        )
 
 
+        Log.i("FormularioNuevoCoche", "$listaVehiculos")
         VehiculoModelDropdownMenu(
             vehiculos = listaVehiculos,
             onVehiculoSelected = {
@@ -187,7 +231,7 @@ fun VehiculoModelDropdownMenu(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
-        TextField(
+        OutlinedTextField(
             value = selectedVehiculo?.toString() ?: "",
             onValueChange = {},
             readOnly = true,
@@ -195,8 +239,13 @@ fun VehiculoModelDropdownMenu(
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
                 .menuAnchor()
-                .fillMaxWidth()
-        )
+                .fillMaxWidth(),
+//            colors = TextFieldDefaults.colors(
+//                focusedContainerColor = Color.Transparent,
+//                unfocusedContainerColor = Color.Transparent,
+//                disabledContainerColor = Color.Transparent,
+//            )
+            )
 
         ExposedDropdownMenu(
             expanded = expanded,
@@ -215,3 +264,4 @@ fun VehiculoModelDropdownMenu(
         }
     }
 }
+

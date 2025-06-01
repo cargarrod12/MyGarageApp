@@ -1,8 +1,9 @@
 package com.application.carlosgarro.mygarageapp.presentation.historial
 
 import android.util.Log
+import android.view.Gravity
+import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,8 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -28,21 +27,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.application.carlosgarro.mygarageapp.core.enums.TipoServicio
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.MantenimientoModel
-import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
 import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
-import java.time.LocalDate
 
 
 @Composable
@@ -50,11 +48,24 @@ fun HistorialScreen(
     id: Long,
     vehiculo: String,
     viewModel: HistorialViewModel = hiltViewModel(),
+    navigateToHome: () -> Unit = {},
+    navigateToMapa: () -> Unit = {},
 ) {
 
     val mantenimientos = viewModel.mantenimientos.observeAsState(emptyList()).value
     var mostrarFormulario by remember { mutableStateOf(false) }
     val mantenimiento by viewModel.mantenimiento.observeAsState(MantenimientoModel(vehiculoId = id))
+
+    val contexto = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        viewModel.eventoMensaje.collect { mensaje ->
+            val toast =  Toast.makeText(contexto, mensaje, Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.CENTER, 0, 200)
+            toast.show()
+        }
+    }
 
     LaunchedEffect(id) {
         Log.i("ID", "ID: $id")
@@ -66,7 +77,7 @@ fun HistorialScreen(
             TopBar()
         },
         bottomBar = {
-            BottomBar()
+            BottomBar(0, navigateToHome, navigateToMapa)
 
         },
         floatingActionButton = {

@@ -4,6 +4,7 @@ import Historial
 import Home
 import Initial
 import Login
+import Mapa
 import Notificacion
 import SignUp
 import Vehiculo
@@ -15,6 +16,7 @@ import com.application.carlosgarro.mygarageapp.presentation.historial.HistorialS
 import com.application.carlosgarro.mygarageapp.presentation.home.HomeScreen
 import com.application.carlosgarro.mygarageapp.presentation.initial.InitialScreen
 import com.application.carlosgarro.mygarageapp.presentation.login.LoginScreen
+import com.application.carlosgarro.mygarageapp.presentation.mapa.MapaScreen
 import com.application.carlosgarro.mygarageapp.presentation.notificaciones.NotificacionesScreen
 import com.application.carlosgarro.mygarageapp.presentation.singup.SignUpScreen
 import com.application.carlosgarro.mygarageapp.presentation.vehiculo.VehiculoScreen
@@ -52,6 +54,8 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
                 navigateToHistorial = { idVehiculo: Long, nombreVehiculo: String ->
                     navHostController.navigate(Historial(id = idVehiculo, vehiculo = nombreVehiculo))
                 },
+                navigateToHome = { navHostController.navigate(Home(name = "")) },
+                navigateToMapa = { navHostController.navigate(Mapa) },
             )
         }
         composable<Vehiculo> { backStackEntry ->
@@ -64,6 +68,7 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
                 navigateToNotificacion = { idVehiculo: Long, nombreVehiculo: String ->
                     navHostController.navigate(Notificacion(id = idVehiculo, vehiculo = nombreVehiculo))
                 },
+                navigateToMapa = { navHostController.navigate(Mapa) },
                 id = id,
             )
         }
@@ -74,6 +79,8 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
             HistorialScreen(
                 id = id,
                 vehiculo = nombreVehiculo,
+                navigateToHome = { navHostController.navigate(Home(name = ""))},
+                navigateToMapa = { navHostController.navigate(Mapa) },
             )
         }
 
@@ -82,8 +89,17 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
             val nombreVehiculo = backStackEntry.arguments?.getString("vehiculo") ?: ""
             NotificacionesScreen(
                 vehiculoId = id,
-                nombreVehiculo = nombreVehiculo
+                nombreVehiculo = nombreVehiculo,
+                navigateToHome = { navHostController.navigate(Home(name = ""))},
+                navigateToMapa = { navHostController.navigate(Mapa) },
             )
+        }
+
+        composable<Mapa> {
+             MapaScreen(
+                navigateToHome = { navHostController.navigate(Home(name = "")) },
+                 navigateToMapa = {}
+             )
         }
 
     }

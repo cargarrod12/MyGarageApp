@@ -18,6 +18,8 @@ import com.application.carlosgarro.mygarageapp.domain.model.reglaMantenimiento.u
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.usecases.getVehiculoByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -46,6 +48,9 @@ class HistorialViewModel @Inject constructor(
 
     private val _mantenimientos = MutableLiveData<List<MantenimientoModel>>(emptyList())
     val mantenimientos: LiveData<List<MantenimientoModel>> = _mantenimientos
+
+    private val _eventoMensaje = MutableSharedFlow<String>()
+    val eventoMensaje: SharedFlow<String> = _eventoMensaje
 
     fun setVehiculoId(id: Long) {
         _vehiculoId.value = id
@@ -125,14 +130,14 @@ class HistorialViewModel @Inject constructor(
                         )
                         val result = resource.data
                         cagaMantenimientos()
-                        getNotificacion(
-                            data
-                        )
+                        getNotificacion(data)
+                        _eventoMensaje.emit("Nueva entrada del Historial añadida correctamente")
                     }
 
                     is Resource.Error -> {
                         _isLoading.value = false
                         Log.e("NUEVA ENTRADA HISTORIAL", "Error: ${resource.message}")
+                        _eventoMensaje.emit("Error al añadir nueva entrada del Historial")
                     }
                 }
             }

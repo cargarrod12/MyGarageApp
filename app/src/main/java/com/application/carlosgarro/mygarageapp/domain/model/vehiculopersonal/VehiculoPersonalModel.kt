@@ -19,13 +19,48 @@ data class VehiculoPersonalModel(
     var anyo: Int = 0,
     var estado: EstadoVehiculo = EstadoVehiculo.NUEVO,
     var kilometros: Int = 0,
-    val imagen: String = "",
     val mantenimientos: List<MantenimientoModel> = emptyList(),
-    val notificaciones: List<NotificacionModel> = emptyList()
+    val notificaciones: List<NotificacionModel> = emptyList(),
+    val imagen: ByteArray? = null
 
-    )
+    ) {
 
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as VehiculoPersonalModel
+
+        if (id != other.id) return false
+        if (usuarioEmail != other.usuarioEmail) return false
+        if (modelo != other.modelo) return false
+        if (anyo != other.anyo) return false
+        if (estado != other.estado) return false
+        if (kilometros != other.kilometros) return false
+        if (mantenimientos != other.mantenimientos) return false
+        if (notificaciones != other.notificaciones) return false
+        if (imagen != null) {
+            if (other.imagen == null) return false
+            if (!imagen.contentEquals(other.imagen)) return false
+        } else if (other.imagen != null) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id?.hashCode() ?: 0
+        result = 31 * result + usuarioEmail.hashCode()
+        result = 31 * result + modelo.hashCode()
+        result = 31 * result + anyo
+        result = 31 * result + estado.hashCode()
+        result = 31 * result + kilometros
+        result = 31 * result + mantenimientos.hashCode()
+        result = 31 * result + notificaciones.hashCode()
+        result = 31 * result + (imagen?.contentHashCode() ?: 0)
+        return result
+    }
+}
 
 
 fun VehiculoPersonalModel.toEntity(): VehiculoPersonalEntity {

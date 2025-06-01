@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.play.services.location)
     ksp(libs.room.compiler)
 
     //Coil
@@ -81,6 +82,16 @@ dependencies {
     kapt(libs.dagger.hilt.compiler)
     implementation(libs.dagger.hilt.navigation.compose)
 
+    //Map
+    implementation(libs.google.maps)
+    implementation(libs.google.play.services.maps)
+    implementation(libs.google.maps.location)
+//    implementation(libs.google.maps.places)
+
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
 
     implementation(libs.kotlin.serialization)
 

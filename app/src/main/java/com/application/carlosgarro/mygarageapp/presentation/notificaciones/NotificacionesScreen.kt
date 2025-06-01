@@ -50,6 +50,8 @@ fun NotificacionesScreen(
     vehiculoId: Long,
     nombreVehiculo: String,
     viewModel: NotificacionesViewModel = hiltViewModel(),
+    navigateToHome: () -> Unit = {},
+    navigateToMapa: () -> Unit = {},
 ) {
     val notificaciones = viewModel.notificaciones.observeAsState(emptyList()).value
 
@@ -74,7 +76,7 @@ fun NotificacionesScreen(
             TopBar()
         },
         bottomBar = {
-            BottomBar()
+            BottomBar(0,navigateToHome, navigateToMapa)
         },
     ) { padding ->
         Column(

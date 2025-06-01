@@ -25,7 +25,7 @@ import com.application.carlosgarro.mygarageapp.data.local.entity.VehiculoPersona
         NotificacionEntity::class,
         ReglaMantenimientoEntity::class
                ],
-    version = 8,
+    version = 9,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

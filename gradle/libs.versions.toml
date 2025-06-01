@@ -20,6 +20,10 @@ coil = "2.7.0"
 room = "2.6.0"
 ksp = "2.0.0-1.0.24"
 runtimeLivedata = "1.8.0"
+maps = "4.4.1"
+googlePlayServicesMaps = "18.2.0"
+playServicesLocation = "21.3.0"
+retrofit = "2.9.0"
 
 [libraries]
 
@@ -54,6 +58,11 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 
+#Maps
+google-maps = { module = "com.google.maps.android:maps-compose", version.ref = "maps" }
+google-play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "googlePlayServicesMaps" }
+google-maps-location = { module = "com.google.android.gms:play-services-location", version = "21.3.0" }
+#google-maps-places = { module = "com.google.android.libraries.places:places", version = "4.4.1" }
 
 
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -61,11 +70,17 @@ coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref="navigationCompose" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref="kotlinSerialization" }
 
+
+#RETROFIT
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit"}
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+
 #HILT
 dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref="daggerHilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref="daggerHilt" }
 dagger-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref="daggerHiltCompose" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 
 [plugins]

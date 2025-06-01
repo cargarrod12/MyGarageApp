@@ -1,8 +1,10 @@
 package com.application.carlosgarro.mygarageapp.presentation.vehiculo
 
 
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Notifications
@@ -37,7 +40,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,7 +57,6 @@ import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.Veh
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VehiculoScreen(
     id: Long,
@@ -58,11 +64,11 @@ fun VehiculoScreen(
     navigateToHome: () -> Unit = {},
     navigateToHistorial: (Long, String) -> Unit,
     navigateToNotificacion: (Long, String) -> Unit,
+    navigateToMapa: () -> Unit = {},
                    ) {
 
     val isLoading by viewModel.isLoading.observeAsState(true)
     val vehiculo by viewModel.vehiculo.observeAsState(VehiculoPersonalModel())
-    var mostrarFormulario by remember { mutableStateOf(false) }
 
     LaunchedEffect(id) {
         Log.i("ID", "ID: $id")
@@ -74,12 +80,12 @@ fun VehiculoScreen(
             TopBar()
         },
         bottomBar = {
-            BottomBar()
+            BottomBar(0,navigateToHome, navigateToMapa)
 
         },
     ) { padding ->
 
-        if (isLoading == true) {
+        if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier
                     .fillMaxSize()
@@ -95,10 +101,27 @@ fun VehiculoScreen(
                 Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
                     // Header Section
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Image(painter = painterResource(id = R.drawable.coche), contentDescription = "Vehicle Image", modifier = Modifier.size(40.dp))
+                        if(vehiculo.imagen != null) {
+                            Image(
+                                painter = painterResource(id = R.drawable.coche),
+                                contentDescription = "Vehicle Image",
+                                modifier = Modifier.size(40.dp)
+                            )
+                        } else {
+                            vehiculo.imagen?.let { bytes ->
+                                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                bitmap?.let {
+                                    Image(
+                                        bitmap = it.asImageBitmap(),
+                                        contentDescription = "Imagen guardada",
+                                        modifier = Modifier.size(40.dp).clip(RoundedCornerShape(4.dp))
+                                    )
+                                }
+                            }
+                        }
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
-                            Text(text = "Modelo ${vehiculo.modelo.toString()}", fontWeight = FontWeight.Bold)
+                            Text(text = vehiculo.modelo.toString(), fontWeight = FontWeight.Bold)
                             Text(text = "Estado: ${vehiculo.estado}", fontWeight = FontWeight.Bold)
                             Text(text = "Año: ${vehiculo.anyo}")
                             Text(text = "KMs: ${vehiculo.kilometros}")
@@ -167,7 +190,7 @@ fun VehiculoScreen(
                                     labelAux = "",
                                     aux= ""
                                 )
-                                HorizontalDivider(thickness = 1.dp, color = Color.Gray)
+//                                HorizontalDivider(thickness = 2.dp, color = Color.Gray)
                             }
                         }
                     }
@@ -185,7 +208,8 @@ fun VehiculoScreen(
                                 labelAux = "Ult. Rev: ",
                                 aux = "${notificacion.kilometrosUltimoServicio}Km"
                             )
-                            HorizontalDivider(thickness = 1.dp, color = Color.Gray)
+                            Spacer(modifier = Modifier.height(5.dp)) // "
+//                            HorizontalDivider(thickness = 1.dp, color = Color.Gray)
                         }
 
                     }
@@ -200,7 +224,28 @@ fun VehiculoScreen(
 @Composable
 fun ListItem(labelServicio: String, labelKm: String,  Km: String, labelAux: String, aux: String) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
+            .background(Color(0xFFF1F1F1))
+            .drawBehind {
+                val strokeWidth = 1.dp.toPx()
+                val color = Color.Black
+
+                // Línea superior
+                drawLine(
+                    color = color,
+                    start = Offset(0f, 0f),
+                    end = Offset(size.width, 0f),
+                    strokeWidth = strokeWidth
+                )
+
+                // Línea inferior
+                drawLine(
+                    color = color,
+                    start = Offset(0f, size.height),
+                    end = Offset(size.width, size.height),
+                    strokeWidth = strokeWidth
+                )
+                        },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

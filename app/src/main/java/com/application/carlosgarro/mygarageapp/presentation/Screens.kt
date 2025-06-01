@@ -20,3 +20,6 @@ data class Historial(val id: Long, val vehiculo: String)
 
 @Serializable
 data class Notificacion(val id: Long, val vehiculo: String)
+
+@Serializable
+object Mapa
