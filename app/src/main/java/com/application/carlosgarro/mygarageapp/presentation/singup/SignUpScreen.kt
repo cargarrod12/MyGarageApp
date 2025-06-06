@@ -1,10 +1,10 @@
 package com.application.carlosgarro.mygarageapp.presentation.singup
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -36,6 +35,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -50,6 +50,9 @@ import com.application.carlosgarro.mygarageapp.ui.theme.SelectedField
 import com.application.carlosgarro.mygarageapp.ui.theme.ShapeButton
 import com.application.carlosgarro.mygarageapp.ui.theme.UnselectedField
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 @Composable
 fun SignUpScreen(auth: FirebaseAuth, navigateToHome: () -> Unit = {}) {
@@ -58,15 +61,17 @@ fun SignUpScreen(auth: FirebaseAuth, navigateToHome: () -> Unit = {}) {
     var passwordRepetir by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
+    var context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(listOf(Blue, Color.White)))
+            .background(Brush.verticalGradient(listOf(Blue, White)))
             .padding(horizontal = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Row() {
+        Row {
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_foreground_icon),
                 contentDescription = "Logo",
@@ -153,20 +158,55 @@ fun SignUpScreen(auth: FirebaseAuth, navigateToHome: () -> Unit = {}) {
                 }
             }
         )
+
+        var valido = password == passwordRepetir && password.isNotEmpty() && email.isNotEmpty()
+
+        if (password != passwordRepetir && password.isNotEmpty() && passwordRepetir.isNotEmpty() && valido) {
+            Text(
+                text = "Las contraseñas no coinciden",
+                color = Color.Red,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+
+
         Spacer(Modifier.height(30.dp))
         Button(
             border = BorderStroke(2.dp, ShapeButton),
             colors = ButtonDefaults.buttonColors(White),
+            enabled = valido,
             onClick = {
-                auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        navigateToHome()
-                        Log.i("REGISTRO", "REGISTRO OK")
-                    } else {
-                        //Error
-                        Log.i("REGISTRO", "REGISTRO KO")
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            navigateToHome()
+                            Log.i("REGISTRO", "REGISTRO OK")
+                        } else {
+                            when (val exception = task.exception) {
+                                is FirebaseAuthUserCollisionException -> {
+                                    // El email ya está en uso
+                                    Log.i("REGISTRO", "El correo ya está en uso")
+                                    Toast.makeText(context, "El correo ya está en uso", Toast.LENGTH_LONG).show()
+                                }
+                                is FirebaseAuthWeakPasswordException -> {
+                                    // La contraseña es muy débil
+                                    Log.i("REGISTRO", "Contraseña débil")
+                                    Toast.makeText(context, "La contraseña es demasiado débil", Toast.LENGTH_LONG).show()
+                                }
+                                is FirebaseAuthInvalidCredentialsException -> {
+                                    // Email con formato inválido
+                                    Log.i("REGISTRO", "Email inválido")
+                                    Toast.makeText(context, "El email no es válido", Toast.LENGTH_LONG).show()
+                                }
+                                else -> {
+                                    // Otro error
+                                    Log.i("REGISTRO", "Error desconocido: ${exception?.message}")
+                                    Toast.makeText(context, "Error realizar el registro. Por favor, intntelo de nuevo más tarde", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        }
                     }
-                }
             }) {
             Text(
                 color = Black,

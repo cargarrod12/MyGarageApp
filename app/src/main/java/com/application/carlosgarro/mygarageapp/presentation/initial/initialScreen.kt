@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.application.carlosgarro.mygarageapp.R
 import com.application.carlosgarro.mygarageapp.ui.theme.BackgroundButton
-import com.application.carlosgarro.mygarageapp.ui.theme.Black
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
 import com.application.carlosgarro.mygarageapp.ui.theme.Gray
 import com.application.carlosgarro.mygarageapp.ui.theme.ShapeButton

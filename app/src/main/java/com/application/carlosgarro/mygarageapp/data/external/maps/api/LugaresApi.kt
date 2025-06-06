@@ -2,7 +2,6 @@ package com.application.carlosgarro.mygarageapp.data.external.maps.api
 //import com.application.carlosgarro.mygarageapp.data.external.maps.response.ListaLugaresResponse
 import com.application.carlosgarro.mygarageapp.data.external.maps.response.NearbyPlacesResponse
 import com.application.carlosgarro.mygarageapp.data.external.maps.response.PlaceDetailsResponse
-import com.application.carlosgarro.mygarageapp.data.external.maps.response.ReviewsListResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

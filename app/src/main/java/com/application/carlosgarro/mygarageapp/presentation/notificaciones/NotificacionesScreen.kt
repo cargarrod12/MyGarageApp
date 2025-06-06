@@ -34,15 +34,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
-import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.application.carlosgarro.mygarageapp.domain.model.notificacion.NotificacionModel
+import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
+import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
 
 @Composable
@@ -152,25 +152,35 @@ fun TablaNotificaciones(notificaciones: List<NotificacionModel>, viewModel: Noti
                     )
                 }
             }
-            item {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ){
-
-                Button(
-                    onClick = {
-                        viewModel.updateNotificaciones(notificaciones)
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = Blue),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.SaveAlt,
-                        contentDescription = "Guardar",
-                        tint = Color.White
-                    )
-                    Text("Guardar")
+            if (notificaciones.isEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("No hay notificaciones disponibles")
+                    }
                 }
+            }else{
+                item {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ){
+                        Button(
+                            onClick = {
+                                viewModel.updateNotificaciones(notificaciones)
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Blue),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.SaveAlt,
+                                contentDescription = "Guardar",
+                                tint = Color.White
+                            )
+                            Text("Guardar")
+                        }
+                    }
                 }
             }
         }

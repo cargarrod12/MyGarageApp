@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.MantenimientoModel
+import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
 import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
@@ -55,6 +56,8 @@ fun HistorialScreen(
     val mantenimientos = viewModel.mantenimientos.observeAsState(emptyList()).value
     var mostrarFormulario by remember { mutableStateOf(false) }
     val mantenimiento by viewModel.mantenimiento.observeAsState(MantenimientoModel(vehiculoId = id))
+    val vehiculoModel by viewModel.vehiculo.observeAsState(null)
+
 
     val contexto = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -134,8 +137,13 @@ fun HistorialScreen(
             if (mostrarFormulario){
             FormularioNuevaEntrada(
                 mantenimiento = mantenimiento,
-                onChange = { Log.i("FORMULARIO HISTORIAL", "onChange: ${mantenimiento}")},
+                onChange = { Log.i("FORMULARIO HISTORIAL", "onChange: $mantenimiento")},
                 onGuardar = {
+                    val error = valido(mantenimiento, vehiculoModel ?: VehiculoPersonalModel())
+                    if (error.isNotEmpty()) {
+                        Toast.makeText(contexto, error, Toast.LENGTH_LONG).show()
+                        return@FormularioNuevaEntrada
+                    }
                     viewModel.addEntradaMantenimiento(mantenimiento)
                     mostrarFormulario = false
                 },
@@ -148,6 +156,18 @@ fun HistorialScreen(
         }
     }
 }
+
+fun valido(mantenimiento: MantenimientoModel, vehiculo: VehiculoPersonalModel): String{
+    var error = ""
+    if (mantenimiento.kilometrosServicio < vehiculo.kilometros) {
+        error += "Los kilómetros del mantenimiento deben ser mayor o igual al del vehiculo. "
+    }
+    if(mantenimiento.precio < 0 || mantenimiento.precio == 0.0){
+        error += "Ingrese un precio. "
+    }
+    return error
+}
+
 
 
 @Composable
@@ -184,21 +204,21 @@ fun HistorialTab(
                         .padding(vertical = 6.dp),
                 ) {
                     Text(
-                        mantenimiento.tipoServicio.toString() ?: "-",
+                        mantenimiento.tipoServicio.toString(),
                         modifier = Modifier.weight(1.0f)
                     )
                     Text(
-                        mantenimiento.kilometrosServicio.toString() ?: "-",
+                        mantenimiento.kilometrosServicio.toString(),
                         modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        mantenimiento.fechaServicio.toString() ?: "-",
+                        mantenimiento.fechaServicio.toString(),
                         modifier = Modifier.weight(1.5f),
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        "${mantenimiento.precio ?: "-"}€",
+                        "${mantenimiento.precio}€",
                         modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Center
                     )

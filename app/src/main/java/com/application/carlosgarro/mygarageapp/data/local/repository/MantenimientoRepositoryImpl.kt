@@ -5,8 +5,6 @@ import com.application.carlosgarro.mygarageapp.data.local.dao.MantenimientoDAO
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.MantenimientoModel
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.toEntity
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.toModel
-import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.toEntity
-import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.toModel
 import com.application.carlosgarro.mygarageapp.domain.repository.MantenimientoRepository
 import javax.inject.Inject
 

@@ -1,12 +1,10 @@
 package com.application.carlosgarro.mygarageapp.presentation.notificaciones
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.application.carlosgarro.mygarageapp.domain.model.Resource
 import com.application.carlosgarro.mygarageapp.domain.model.notificacion.NotificacionModel
 import com.application.carlosgarro.mygarageapp.domain.model.notificacion.usecases.getNotificacionesByVehiculoPersonalIdUseCase
@@ -28,10 +26,10 @@ class NotificacionesViewModel @Inject constructor(
     private val _notificaciones = MutableLiveData<List<NotificacionModel>>(emptyList())
     val notificaciones: LiveData<List<NotificacionModel>> get() = _notificaciones
 
-    private val _vehiculoId = MutableLiveData<Long>(0L)
+    private val _vehiculoId = MutableLiveData(0L)
     val vehiculoId: LiveData<Long> get() = _vehiculoId
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _eventoMensaje = MutableSharedFlow<String>()
@@ -45,7 +43,7 @@ class NotificacionesViewModel @Inject constructor(
         viewModelScope.launch {
             if (_vehiculoId.value != null) {
                 Log.i("PANTALLA NOTIFICACIONES", "ID: ${_vehiculoId.value}")
-                getNotificacionesByVehiculoPersonalIdUseCase(_vehiculoId.value!!).collect(){ resource ->
+                getNotificacionesByVehiculoPersonalIdUseCase(_vehiculoId.value!!).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
@@ -70,9 +68,9 @@ class NotificacionesViewModel @Inject constructor(
 
 
     fun updateNotificaciones(notificaciones: List<NotificacionModel>){
-        Log.e("PANTALLA NOTIFICACIONES", "Lista Notificaciones a actualizar: ${notificaciones}" )
+        Log.e("PANTALLA NOTIFICACIONES", "Lista Notificaciones a actualizar: $notificaciones" )
         viewModelScope.launch {
-            updateNotificacionesUseCase(notificaciones).collect(){ resource ->
+            updateNotificacionesUseCase(notificaciones).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         _isLoading.value = true

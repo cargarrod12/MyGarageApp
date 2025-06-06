@@ -5,8 +5,9 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.application.carlosgarro.mygarageapp.data.local.Converters
 import com.application.carlosgarro.mygarageapp.core.enums.EstadoVehiculo
+import com.application.carlosgarro.mygarageapp.data.local.Converters
+import java.time.LocalDate
 
 @Entity(
     tableName = "vehiculo_personal",
@@ -42,7 +43,10 @@ data class VehiculoPersonalEntity(
 
     val anyo: Int,
     val kilometros: Int,
-    val imagen: ByteArray?
+    val imagen: ByteArray?,
+
+    @TypeConverters(Converters::class)
+    val fechaUltModificacion: LocalDate?
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

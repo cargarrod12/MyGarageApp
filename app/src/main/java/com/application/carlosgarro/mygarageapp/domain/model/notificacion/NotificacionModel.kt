@@ -11,7 +11,7 @@ data class NotificacionModel(
     val kilometrosUltimoServicio: Int = 0,
     val kilometrosProximoServicio: Int = 0,
     val notificado: Boolean = false,
-    var activo: Boolean = true
+    var activo: Boolean = true,
 
 )
 
@@ -40,6 +40,7 @@ fun NotificacionEntity.toModel(): NotificacionModel {
         activo = activo
     )
 }
+
 
 
 

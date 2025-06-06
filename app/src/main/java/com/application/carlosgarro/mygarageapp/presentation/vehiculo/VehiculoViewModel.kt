@@ -17,13 +17,13 @@ class VehiculoViewModel @Inject constructor(
     private val getVehiculoByIdUseCase: getVehiculoByIdUseCase
 ): ViewModel() {
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _vehiculoId = MutableLiveData<Long>(0L)
+    private val _vehiculoId = MutableLiveData(0L)
     val vehiculoId: LiveData<Long> get() = _vehiculoId
 
-    private val _vehiculo = MutableLiveData<VehiculoPersonalModel>(VehiculoPersonalModel())
+    private val _vehiculo = MutableLiveData(VehiculoPersonalModel())
     val vehiculo: LiveData<VehiculoPersonalModel> = _vehiculo
 
 
@@ -37,7 +37,7 @@ class VehiculoViewModel @Inject constructor(
         viewModelScope.launch {
             if (_vehiculoId.value != null) {
                 Log.i("PANTALLA VEHICULO", "ID: ${_vehiculoId.value}")
-                getVehiculoByIdUseCase(_vehiculoId.value!!).collect() { resource ->
+                getVehiculoByIdUseCase(_vehiculoId.value!!).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true

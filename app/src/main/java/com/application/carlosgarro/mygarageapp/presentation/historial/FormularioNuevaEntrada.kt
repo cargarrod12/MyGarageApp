@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -20,14 +19,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,19 +32,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.application.carlosgarro.mygarageapp.R
-import com.application.carlosgarro.mygarageapp.core.enums.EstadoVehiculo
-import com.application.carlosgarro.mygarageapp.core.enums.MarcaVehiculo
-import com.application.carlosgarro.mygarageapp.core.enums.ModeloVehiculo
 import com.application.carlosgarro.mygarageapp.core.enums.TipoServicio
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.MantenimientoModel
-import com.application.carlosgarro.mygarageapp.domain.model.vehiculo.VehiculoModel
-import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
-import com.application.carlosgarro.mygarageapp.ui.theme.Red
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -89,12 +76,12 @@ fun FormularioNuevaEntrada(
 
 
         Spacer(modifier = Modifier.height(8.dp))
-
         OutlinedTextField(
             value = kilometros,
-            onValueChange = {
-                kilometros = it
-                mantenimiento.kilometrosServicio = it.toIntOrNull() ?: 0
+            onValueChange = { it ->
+                val filtered = it.filter { it.isDigit() }
+                kilometros = (filtered.toIntOrNull() ?: 0).toString()
+                mantenimiento.kilometrosServicio = filtered.toIntOrNull() ?: 0
                 onChange()
             },
             label = { Text("Kilómetros") },
@@ -137,15 +124,6 @@ fun FormularioNuevaEntrada(
             ) {
                 Text("Guardar")
             }
-            Spacer(modifier = Modifier.width(8.dp))
-            Button(
-                onClick = {
-                    onCancelar()
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Red)
-            ) {
-                Text("Cancelar")
-            }
         }
     }
 }
@@ -182,6 +160,7 @@ fun <T> DropdownSelector(label: String, options: List<T>, selected: T, onSelecte
     }
 }
 
+
 @Composable
 fun FormularioConFecha(onFechaChange: (LocalDate) -> Unit = {}) {
     val context = LocalContext.current
@@ -190,20 +169,26 @@ fun FormularioConFecha(onFechaChange: (LocalDate) -> Unit = {}) {
 
     var fechaSeleccionada by remember { mutableStateOf("") }
 
-    val datePickerDialog = DatePickerDialog(
-        context,
-        { _, year, month, dayOfMonth ->
-            val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-            fechaSeleccionada = selectedDate.format(dateFormatter)
-            onFechaChange(selectedDate)
-        },
-        calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH),
-        calendar.get(Calendar.DAY_OF_MONTH)
-    )
+    // Crear el DatePickerDialog con una restricción de fecha máxima
+    val datePickerDialog = remember {
+        DatePickerDialog(
+            context,
+            { _, year, month, dayOfMonth ->
+                val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                fechaSeleccionada = selectedDate.format(dateFormatter)
+                onFechaChange(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).apply {
+            // Establece el límite máximo como hoy
+            datePicker.maxDate = System.currentTimeMillis()
+        }
+    }
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Text(text = "Selecciona una fecha", fontWeight = FontWeight.Bold)
+        Text(text = "Selecciona una fecha")
 
         Spacer(modifier = Modifier.height(8.dp))
 

@@ -211,7 +211,7 @@ fun VehiculoScreen(
                                 ListItem(
                                     labelServicio = notificacion.tipoServicio.toString(),
                                     labelKm = "Prox. Rev: ",
-                                    Km = "${notificacion.kilometrosProximoServicio}Km",
+                                    km = "${notificacion.kilometrosProximoServicio}Km",
                                     labelAux = "",
                                     aux= ""
                                 )
@@ -234,7 +234,7 @@ fun VehiculoScreen(
                             ListItem(
                                 labelServicio = notificacion.tipoServicio.toString(),
                                 labelKm = "Prox. Rev: ",
-                                Km = "${notificacion.kilometrosProximoServicio}Km",
+                                km = "${notificacion.kilometrosProximoServicio}Km",
                                 labelAux = "Ult. Rev: ",
                                 aux = "${notificacion.kilometrosUltimoServicio}Km"
                             )
@@ -252,7 +252,7 @@ fun VehiculoScreen(
 }
 
 @Composable
-fun ListItem(labelServicio: String, labelKm: String,  Km: String, labelAux: String, aux: String) {
+fun ListItem(labelServicio: String, labelKm: String,  km: String, labelAux: String, aux: String) {
     Row(
         modifier = Modifier.fillMaxWidth()
             .background(Color(0xFFF1F1F1))
@@ -281,7 +281,7 @@ fun ListItem(labelServicio: String, labelKm: String,  Km: String, labelAux: Stri
     ) {
         Text(text = labelServicio)
         Column(horizontalAlignment = Alignment.End) {
-            Text(text = "$labelKm $Km")
+            Text(text = "$labelKm $km")
             if(labelAux != ""){
             Text(text = "$labelAux $aux", style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray))
             }

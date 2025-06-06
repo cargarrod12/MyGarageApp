@@ -1,6 +1,5 @@
 package com.application.carlosgarro.mygarageapp.data.external.maps.response
 
-import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.SerializedName
 
 data class NearbyPlacesResponse(

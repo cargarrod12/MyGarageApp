@@ -1,12 +1,10 @@
 package com.application.carlosgarro.mygarageapp.presentation.login
 
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,8 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -27,6 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,12 +35,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.application.carlosgarro.mygarageapp.R
@@ -53,21 +50,25 @@ import com.application.carlosgarro.mygarageapp.ui.theme.SelectedField
 import com.application.carlosgarro.mygarageapp.ui.theme.ShapeButton
 import com.application.carlosgarro.mygarageapp.ui.theme.UnselectedField
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
 @Composable
 fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit = {}) {
     var email by remember { mutableStateOf("prueba@prueba.com") }
     var password by remember { mutableStateOf("prueba") }
     var passwordVisible by remember { mutableStateOf(false) }
+
+    var context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(listOf(Blue, Color.White)))
+            .background(Brush.verticalGradient(listOf(Blue, White)))
             .padding(horizontal = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Row() {
+        Row {
 
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_foreground_icon),
@@ -132,15 +133,31 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit = {}) {
             border = BorderStroke(2.dp, ShapeButton),
             colors = ButtonDefaults.buttonColors(White),
             onClick = {
-                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        navigateToHome()
-                        Log.i("LOGIN", "LOGIN OK")
-                    } else {
-                        //Error
-                        Log.i("LOGIN", "LOGIN KO")
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            navigateToHome()
+                            Log.i("LOGIN", "LOGIN OK")
+                        } else {
+                            when (val exception = task.exception) {
+                                is FirebaseAuthInvalidUserException -> {
+                                    // El usuario no existe o ha sido deshabilitado
+                                    Log.i("LOGIN", "Usuario no encontrado")
+                                    Toast.makeText(context, "Usuario no registrado", Toast.LENGTH_LONG).show()
+                                }
+                                is FirebaseAuthInvalidCredentialsException -> {
+                                    // Contraseña incorrecta
+                                    Log.i("LOGIN", "Credenciales inválidas")
+                                    Toast.makeText(context, "Email o contraseña incorrectos", Toast.LENGTH_LONG).show()
+                                }
+                                else -> {
+                                    // Otro error
+                                    Log.i("LOGIN", "Error desconocido: ${exception?.message}")
+                                    Toast.makeText(context, "Error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        }
                     }
-                }
             }) {
             Text(
                 color = Black,

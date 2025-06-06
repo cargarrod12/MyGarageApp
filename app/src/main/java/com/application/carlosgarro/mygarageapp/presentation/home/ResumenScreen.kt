@@ -28,7 +28,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -43,6 +42,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -62,7 +62,6 @@ import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
 import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: ResumenViewModel = hiltViewModel(),
@@ -74,7 +73,7 @@ fun HomeScreen(
     ) {
 
     val tabTitles = listOf("Resumen", "Mis Coches")
-    var selectedTab by remember { mutableStateOf(0) }
+    var selectedTab by remember { mutableIntStateOf(0) }
     val listaVehiculosPersonales by viewModel.listaVehiculoPersonal.observeAsState(emptyList())
     val isLoading by viewModel.isLoading.observeAsState(false)
     var mostrarFormulario by remember { mutableStateOf(false) }
@@ -158,7 +157,7 @@ fun HomeScreen(
                         listaVehiculos,
                         imagenUri,
                         onChange = {
-                            Log.i("FORMULARIO VEHICULO", "onChange: ${vehiculo}")
+                            Log.i("FORMULARIO VEHICULO", "onChange: $vehiculo")
                         },
                         onGuardar = {
                             viewModel.addVehiculoPersonal(vehiculo)

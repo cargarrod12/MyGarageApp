@@ -3,7 +3,6 @@ package com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.useca
 import android.util.Log
 import com.application.carlosgarro.mygarageapp.domain.model.Resource
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.MantenimientoModel
-import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 import com.application.carlosgarro.mygarageapp.domain.repository.MantenimientoRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -18,7 +17,7 @@ class getMantenimientosByVehiculoPersonal @Inject constructor(
             emit(Resource.Loading())
             emit(
                 Resource.Success(
-                    data = repository.getMantenimientosByVehiculoPersonal(id) ?: emptyList()
+                    data = repository.getMantenimientosByVehiculoPersonal(id)
                 )
             )
         } catch (e: Exception) {

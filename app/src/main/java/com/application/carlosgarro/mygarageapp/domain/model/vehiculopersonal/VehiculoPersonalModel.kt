@@ -1,9 +1,9 @@
 package com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal
 
-import com.application.carlosgarro.mygarageapp.data.local.entity.VehiculoPersonalEntity
 import com.application.carlosgarro.mygarageapp.core.enums.EstadoVehiculo
 import com.application.carlosgarro.mygarageapp.core.enums.MarcaVehiculo
 import com.application.carlosgarro.mygarageapp.core.enums.ModeloVehiculo
+import com.application.carlosgarro.mygarageapp.data.local.entity.VehiculoPersonalEntity
 import com.application.carlosgarro.mygarageapp.data.local.relations.VehiculoPersonalCompleto
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.MantenimientoModel
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.toModel
@@ -11,6 +11,7 @@ import com.application.carlosgarro.mygarageapp.domain.model.notificacion.Notific
 import com.application.carlosgarro.mygarageapp.domain.model.notificacion.toModel
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculo.VehiculoModel
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculo.toModel
+import java.time.LocalDate
 
 data class VehiculoPersonalModel(
     val id: Long? = 0L,
@@ -21,7 +22,8 @@ data class VehiculoPersonalModel(
     var kilometros: Int = 0,
     val mantenimientos: List<MantenimientoModel> = emptyList(),
     val notificaciones: List<NotificacionModel> = emptyList(),
-    val imagen: ByteArray? = null
+    val imagen: ByteArray? = null,
+    val fechaUltModificacion: LocalDate? = null
 
     ) {
 
@@ -71,7 +73,8 @@ fun VehiculoPersonalModel.toEntity(): VehiculoPersonalEntity {
         anyo = anyo,
         kilometros = kilometros,
         imagen = imagen,
-        id = id?: 0L
+        id = id?: 0L,
+        fechaUltModificacion = LocalDate.now() // Uncomment if you want to set the current date as default
     )
 }
 

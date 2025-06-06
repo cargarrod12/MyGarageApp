@@ -25,19 +25,19 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindVehiculoPersonalRepository(
-        VehiculoPersonalRepositoryImpl: VehiculoPersonalRepositoryImpl
+        vehiculoPersonalRepositoryImpl: VehiculoPersonalRepositoryImpl
     ): VehiculoPersonalRepository
 
     @Singleton
     @Binds
     abstract fun bindVehiculoRepository(
-        VehiculoRepositoryImpl: VehiculoRepositoryImpl
+        vehiculoRepositoryImpl: VehiculoRepositoryImpl
     ): VehiculoRepository
 
     @Singleton
     @Binds
     abstract fun bindMantenimientoRepository(
-        MantenimientoRepositoryImpl: MantenimientoRepositoryImpl
+        mantenimientoRepositoryImpl: MantenimientoRepositoryImpl
     ): MantenimientoRepository
 
     @Singleton

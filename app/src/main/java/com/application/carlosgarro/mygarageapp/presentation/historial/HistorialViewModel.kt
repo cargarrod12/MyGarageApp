@@ -33,16 +33,16 @@ class HistorialViewModel @Inject constructor(
     private val getVehiculoPersonalByIdUseCase: getVehiculoByIdUseCase
     ): ViewModel() {
 
-    private val _mantenimiento = MutableLiveData<MantenimientoModel>(MantenimientoModel())
+    private val _mantenimiento = MutableLiveData(MantenimientoModel())
     val mantenimiento: LiveData<MantenimientoModel> get() = _mantenimiento
 
-    private val _vehiculoId = MutableLiveData<Long>(0L)
+    private val _vehiculoId = MutableLiveData(0L)
     val vehiculoId: LiveData<Long> get() = _vehiculoId
 
-    private val _vehiculo = MutableLiveData<VehiculoPersonalModel?>(VehiculoPersonalModel())
+    private val _vehiculo = MutableLiveData(VehiculoPersonalModel())
     val vehiculo: MutableLiveData<VehiculoPersonalModel?> get() = _vehiculo
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _mantenimientos = MutableLiveData<List<MantenimientoModel>>(emptyList())
@@ -60,7 +60,7 @@ class HistorialViewModel @Inject constructor(
         viewModelScope.launch {
             if (_vehiculoId.value != null) {
                 Log.i("PANTALLA HISTORIAL", "ID: ${_vehiculoId.value}")
-                getMantenimientosByVehiculoPersonal(_vehiculoId.value!!).collect() { resource ->
+                getMantenimientosByVehiculoPersonal(_vehiculoId.value!!).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
@@ -79,7 +79,7 @@ class HistorialViewModel @Inject constructor(
                         }
                     }
 
-                    getVehiculoPersonalByIdUseCase(_vehiculoId.value!!).collect() { resource ->
+                    getVehiculoPersonalByIdUseCase(_vehiculoId.value!!).collect { resource ->
                         when (resource) {
                             is Resource.Loading -> {
                                 _isLoading.value = true
@@ -111,7 +111,7 @@ class HistorialViewModel @Inject constructor(
     fun addEntradaMantenimiento(value: MantenimientoModel) {
         viewModelScope.launch {
             val data = value.copy(vehiculoId = _vehiculoId.value!!)
-            saveMantenimientoUseCase(data).collect() { resource ->
+            saveMantenimientoUseCase(data).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         _isLoading.value = true
@@ -153,7 +153,7 @@ class HistorialViewModel @Inject constructor(
             getNotificacionByVehiculoPersonalUseCase(
                 mantenmiento.vehiculoId,
                 mantenmiento.tipoServicio
-            ).collect() { resource ->
+            ).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         _isLoading.value = true
@@ -195,7 +195,7 @@ class HistorialViewModel @Inject constructor(
                 getReglaMantenimientoByVehiculoPersonalAndTipoServicio(
                     vehiculoId,
                     mantenmiento.tipoServicio
-                ).collect() { resource ->
+                ).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
@@ -242,7 +242,7 @@ class HistorialViewModel @Inject constructor(
                     reglaMantenimientoId = reglaMantenimiento.id!!
 
                 )
-                saveNotificacionUseCase(notificacion).collect() { resource ->
+                saveNotificacionUseCase(notificacion).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true

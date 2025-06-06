@@ -2,6 +2,7 @@ package com.application.carlosgarro.mygarageapp.presentation.home
 
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -47,6 +48,7 @@ import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.Veh
 import com.application.carlosgarro.mygarageapp.presentation.components.SelectorImagen
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
 import com.application.carlosgarro.mygarageapp.ui.theme.Red
+import java.util.Calendar
 
 
 @Composable
@@ -70,7 +72,7 @@ fun FormularioNuevoCoche(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp, vertical = 10.dp)
             .background(Color.White)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -83,22 +85,7 @@ fun FormularioNuevoCoche(
         var kilometros by remember { mutableStateOf(vehiculo.kilometros.toString()) }
         var estado by remember { mutableStateOf(vehiculo.estado) }
 
-//        Button(
-//            onClick = { launcher.launch("image/*") },
-//            colors = ButtonDefaults.buttonColors(containerColor = Blue),
-//        ) {
-//            Text("Seleccionar Imagen")
-//        }
-//
-//        imagenUri?.let { Uri ->
-//            Image(
-//                painter = rememberAsyncImagePainter(Uri),
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .size(200.dp)
-//                    .clip(RoundedCornerShape(8.dp))
-//            )
-//        }
+
         SelectorImagen(
             imagenSeleccionada = viewModel.imagenSeleccionada.value,
             onSeleccionarImagen = { launcher.launch("image/*") }
@@ -115,13 +102,19 @@ fun FormularioNuevoCoche(
 
 
         Spacer(modifier = Modifier.height(8.dp))
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
         OutlinedTextField(
             value = anyo,
-            onValueChange = {
-                anyo = it
-                vehiculo.anyo = it.toIntOrNull() ?: 0
+            onValueChange = {it ->
+                val filtered = it.filter { it.isDigit() }.take(4)
+                if (filtered.toIntOrNull() != null && filtered.toInt() > currentYear){
+                    Toast.makeText(context, "El año del vehiculo no puede ser superior a $currentYear", Toast.LENGTH_SHORT).show()
+                }else{
+                anyo = (filtered.toIntOrNull() ?: 0).toString()
+                vehiculo.anyo = filtered.toIntOrNull() ?: 0
                 onChange()
+                }
             },
             label = { Text("Año") },
             modifier = Modifier.fillMaxWidth(),
@@ -133,8 +126,9 @@ fun FormularioNuevoCoche(
         OutlinedTextField(
             value = kilometros,
             onValueChange = {
-                kilometros = it
-                vehiculo.kilometros = it.toIntOrNull() ?: 0
+                val filtered = it.filter { it.isDigit() }
+                kilometros = (filtered.toIntOrNull() ?: 0).toString()
+                vehiculo.kilometros = filtered.toIntOrNull() ?: 0
                 onChange()
             },
             label = { Text("Kilómetros") },
@@ -144,7 +138,7 @@ fun FormularioNuevoCoche(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        DropdownSelector("Estado", EstadoVehiculo.values().toList(), estado) {
+        DropdownSelector("Estado", EstadoVehiculo.entries, estado) {
             estado = it
             vehiculo.estado = it
             onChange()
@@ -155,10 +149,16 @@ fun FormularioNuevoCoche(
         Row {
             Button(
                 onClick = {
+                    val error = valido(vehiculo)
+                    if (error.isNotEmpty()) {
+                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }else{
                     onGuardar()
                     vehiculo.anyo = 0
                     vehiculo.kilometros = 0
                     vehiculo.estado = EstadoVehiculo.NUEVO
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Blue),
             ) {
@@ -175,6 +175,20 @@ fun FormularioNuevoCoche(
             }
         }
     }
+}
+
+fun valido(vehiculo: VehiculoPersonalModel): String {
+   var error = ""
+
+    if (vehiculo.modelo.id == 0L) {
+        error += "Modelo no seleccionado. "
+    }
+    if (vehiculo.anyo < 1900) {
+        error += "Ingrese un año válido. "
+    }
+
+    return error
+
 }
 
 

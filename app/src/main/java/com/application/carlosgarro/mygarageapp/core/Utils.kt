@@ -27,7 +27,6 @@ fun checkLocationPermission(context: Context): Boolean {
 }
 
 
-@Suppress("DEPRECATION")
 fun getApiKeyFromManifest(context: Context): String {
     return try {
         val appInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

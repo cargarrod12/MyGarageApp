@@ -73,7 +73,7 @@ fun EditarVehiculoScreen(
     }
 
     LaunchedEffect(vehiculo.id) {
-        vehiculo?.let {
+        vehiculo.let {
             kilometros = it.kilometros.toString()
             estado = it.estado
         }

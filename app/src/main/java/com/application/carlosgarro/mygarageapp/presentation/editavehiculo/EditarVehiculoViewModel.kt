@@ -27,13 +27,13 @@ class EditarVehiculoViewModel @Inject constructor(
     private val saveVehiculoPersonal: saveVehiculoPersonalUseCase,
     private val deleteVehiculoPersonalUseCase: deleteVehiculoPersonalUseCase
 ): ViewModel() {
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _vehiculoId = MutableLiveData<Long>(0L)
     val vehiculoId: LiveData<Long> get() = _vehiculoId
 
-    private val _vehiculo = MutableLiveData<VehiculoPersonalModel>(VehiculoPersonalModel())
+    private val _vehiculo = MutableLiveData(VehiculoPersonalModel())
     val vehiculo: LiveData<VehiculoPersonalModel> = _vehiculo
 
     private val _imagenSeleccionada = MutableLiveData<ByteArray?>(null)
@@ -54,7 +54,7 @@ class EditarVehiculoViewModel @Inject constructor(
         viewModelScope.launch {
             if (_vehiculoId.value != null) {
                 Log.i("PANTALLA ACTUALIZAR VEHICULO", "ID: ${_vehiculoId.value}")
-                getVehiculoByIdUseCase(_vehiculoId.value!!).collect() { resource ->
+                getVehiculoByIdUseCase(_vehiculoId.value!!).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
@@ -63,8 +63,8 @@ class EditarVehiculoViewModel @Inject constructor(
 
                         is Resource.Success -> {
                             _vehiculo.value = resource.data ?: VehiculoPersonalModel()
-                            _isLoading.value = false
                             _imagenSeleccionada.value = resource.data?.imagen
+                            _isLoading.value = false
                             Log.i("PANTALLA ACTUALIZAR VEHICULO", "Success: ${resource.data}")
                         }
 
@@ -99,7 +99,7 @@ class EditarVehiculoViewModel @Inject constructor(
             val usuarioEmail = firebaseAuth.currentUser?.email
             if (usuarioEmail != null) {
                 val data = value.copy(usuarioEmail = usuarioEmail, imagen = imagenSeleccionada.value)
-                saveVehiculoPersonal(data).collect() { resource ->
+                saveVehiculoPersonal(data).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true

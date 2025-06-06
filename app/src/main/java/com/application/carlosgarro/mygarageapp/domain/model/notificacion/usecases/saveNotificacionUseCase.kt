@@ -10,7 +10,7 @@ import javax.inject.Inject
 class saveNotificacionUseCase @Inject constructor(
     private val repository: NotificacionRepository
 ) {
-    suspend operator fun invoke(notificacion: NotificacionModel): Flow<Resource<Boolean>> = flow {
+    operator fun invoke(notificacion: NotificacionModel): Flow<Resource<Boolean>> = flow {
         try {
             emit(Resource.Loading())
             emit(

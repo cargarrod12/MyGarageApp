@@ -27,7 +27,7 @@ import com.application.carlosgarro.mygarageapp.data.local.entity.VehiculoPersona
         ReglaMantenimientoEntity::class,
         ConsejoEntity::class
                ],
-    version = 11,
+    version = 13,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

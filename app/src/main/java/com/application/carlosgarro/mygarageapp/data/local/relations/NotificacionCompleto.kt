@@ -2,7 +2,6 @@ package com.application.carlosgarro.mygarageapp.data.local.relations
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.application.carlosgarro.mygarageapp.data.local.entity.MantenimientoEntity
 import com.application.carlosgarro.mygarageapp.data.local.entity.NotificacionEntity
 import com.application.carlosgarro.mygarageapp.data.local.entity.ReglaMantenimientoEntity
 

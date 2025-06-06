@@ -33,10 +33,10 @@ class ResumenViewModel @Inject constructor(
     private val _listaVehiculoPersonal = MutableLiveData<List<VehiculoPersonalModel>>(emptyList())  // mutable interna
     val listaVehiculoPersonal: LiveData<List<VehiculoPersonalModel>> = _listaVehiculoPersonal // solo lectura pública
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _vehiculoPersonal = MutableLiveData<VehiculoPersonalModel>(VehiculoPersonalModel())
+    private val _vehiculoPersonal = MutableLiveData(VehiculoPersonalModel())
     val vehiculoPersonal: LiveData<VehiculoPersonalModel> = _vehiculoPersonal
 
     private val _listaVehiculo = MutableLiveData<List<VehiculoModel>>(emptyList())
@@ -62,7 +62,7 @@ class ResumenViewModel @Inject constructor(
 
             val usuarioEmail = firebaseAuth.currentUser?.email
             if (usuarioEmail != null) {
-                getVehiculoPersonalByUser(usuarioEmail).collect() { resource ->
+                getVehiculoPersonalByUser(usuarioEmail).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _listaVehiculoPersonal.value = emptyList()
@@ -106,7 +106,7 @@ class ResumenViewModel @Inject constructor(
             val usuarioEmail = firebaseAuth.currentUser?.email
             if (usuarioEmail != null) {
                 val data = value.copy(usuarioEmail = usuarioEmail, imagen = imagenSeleccionada.value)
-                saveVehiculoPersonal(data).collect() { resource ->
+                saveVehiculoPersonal(data).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
