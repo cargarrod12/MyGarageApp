@@ -8,7 +8,7 @@ import com.application.carlosgarro.mygarageapp.data.local.Converters
 
 
 @Entity(tableName = "consejo")
-data class ConsejoEntity(
+data class ConsejoEntity (
 
     @PrimaryKey
     @TypeConverters(Converters::class)

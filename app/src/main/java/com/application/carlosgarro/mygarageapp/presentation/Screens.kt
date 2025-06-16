@@ -27,3 +27,6 @@ object Mapa
 
 @Serializable
 data class EditarVehiculo(val id: Long)
+
+@Serializable
+object Consejo

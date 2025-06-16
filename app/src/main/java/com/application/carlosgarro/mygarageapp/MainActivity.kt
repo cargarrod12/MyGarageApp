@@ -1,32 +1,39 @@
 package com.application.carlosgarro.mygarageapp
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.room.Room
+import com.application.carlosgarro.mygarageapp.core.worker.BatchScheduler
 import com.application.carlosgarro.mygarageapp.ui.theme.MyGarageAppTheme
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+
 
     private lateinit var navHostController : NavHostController
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        solicitarPermisoNotificacionesSiEsNecesario()
+        BatchScheduler.schedule(applicationContext)
         auth = Firebase.auth
         setContent {
             navHostController = rememberNavController()
@@ -41,5 +48,38 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private val requestNotificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                Log.i("MainActivity", "Permiso de notificaciones concedido")
+            } else {
+                Log.i("MainActivity", "Permiso de notificaciones denegado")
+            }
         }
+
+    private fun solicitarPermisoNotificacionesSiEsNecesario() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val permiso = Manifest.permission.POST_NOTIFICATIONS
+            when {
+                ContextCompat.checkSelfPermission(this, permiso) == PackageManager.PERMISSION_GRANTED -> {
+                    Log.i("MainActivity", "Permiso de notificaciones ya concedido")
+                }
+
+                shouldShowRequestPermissionRationale(permiso) -> {
+                    // Puedes mostrar un diálogo aquí si quieres explicar por qué
+                    Log.i("MainActivity", "Se debe mostrar una justificación para el permiso de notificaciones")
+                    requestNotificationPermissionLauncher.launch(permiso)
+                }
+
+                else -> {
+                    // Solicita el permiso directamente
+                    Log.i("MainActivity", "Solicitando permiso de notificaciones")
+                    requestNotificationPermissionLauncher.launch(permiso)
+                }
+            }
+        }
+    }
+
     }

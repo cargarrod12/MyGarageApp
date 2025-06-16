@@ -1,6 +1,5 @@
 package com.application.carlosgarro.mygarageapp.data.local.repository
 
-import android.util.Log
 import com.application.carlosgarro.mygarageapp.data.local.dao.VehiculoDAO
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculo.VehiculoModel
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculo.toModel
@@ -16,7 +15,7 @@ class VehiculoRepositoryImpl @Inject constructor(
             return vehiculoDAO.getAllVehiculos().map { it.toModel() }
 
         }catch (e: Exception){
-            Log.e("VehiculoRepositoryImpl", "Error fetching vehiculos: ${e.message}")
+            println(e.message)
         }
         return emptyList()
     }

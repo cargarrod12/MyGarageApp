@@ -28,8 +28,9 @@ class DataBaseModule {
             appContext,
             LocalDataSource::class.java, "my_garage_database"
         )
-//            .fallbackToDestructiveMigration()
-            .createFromAsset("my_garage_database.db")
+            .fallbackToDestructiveMigration(false)
+//            .createFromAsset("my_garage_database.db")
+            .createFromAsset("my_garage_database_datos_generales.db")
             .setJournalMode(RoomDatabase.JournalMode.TRUNCATE) // opcional, mejora logs
             .setQueryCallback({ sqlQuery, bindArgs ->
                 Log.d("RoomQuery", "SQL Query: $sqlQuery, args: $bindArgs")
@@ -60,6 +61,10 @@ class DataBaseModule {
     @Singleton
     @Provides
     fun provideConsejoDAO (db: LocalDataSource) = db.consejoDAO()
+
+    @Singleton
+    @Provides
+    fun provideUsuarioDAO (db: LocalDataSource) = db.usuarioDAO()
 
 
 }

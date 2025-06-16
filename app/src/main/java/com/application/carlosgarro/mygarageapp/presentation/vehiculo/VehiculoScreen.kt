@@ -52,6 +52,7 @@ import com.application.carlosgarro.mygarageapp.core.calcularProximosMantenimient
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
 import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
+import com.application.carlosgarro.mygarageapp.presentation.components.TopBarViewModel
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
 
 
@@ -63,8 +64,11 @@ fun VehiculoScreen(
     navigateToHistorial: (Long, String) -> Unit,
     navigateToNotificacion: (Long, String) -> Unit,
     navigateToMapa: () -> Unit = {},
-    navigateToEditarVehiculo: (Long) -> Unit = {}
-                   ) {
+    navigateToInitial: () -> Unit = {},
+    navigateToConsejo: () -> Unit = {},
+    navigateToEditarVehiculo: (Long) -> Unit = {},
+    topBarViewModel: TopBarViewModel = hiltViewModel(),
+    ) {
 
     val isLoading by viewModel.isLoading.observeAsState(true)
     val vehiculo by viewModel.vehiculo.observeAsState(VehiculoPersonalModel())
@@ -76,21 +80,32 @@ fun VehiculoScreen(
 
     Scaffold(
         topBar = {
-            TopBar()
+            TopBar(
+                viewModel = topBarViewModel,
+                navigateToInitial = navigateToInitial
+            )
         },
         bottomBar = {
-            BottomBar(0,navigateToHome, navigateToMapa)
+            BottomBar(0,navigateToHome, navigateToMapa,navigateToConsejo)
 
         },
     ) { padding ->
 
         if (isLoading) {
-            CircularProgressIndicator(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
-                color = Color.Blue
-            )
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(64.dp),
+                    color = Color.Blue
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Cargando datos...", color = Color.Black)
+            }
         } else {
             Column(
                 modifier = Modifier.padding(padding)
@@ -106,7 +121,7 @@ fun VehiculoScreen(
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.align(Alignment.CenterStart) // Contenido principal
+                            modifier = Modifier.align(Alignment.CenterStart)
                         ) {
                             if (vehiculo.imagen != null) {
                                 val bitmap = BitmapFactory.decodeByteArray(vehiculo.imagen, 0, vehiculo.imagen!!.size)
@@ -137,7 +152,7 @@ fun VehiculoScreen(
                             }
                         }
 
-                        // Ícono de edición en esquina superior derecha
+
                         Icon(
                             imageVector = Icons.Default.Edit,
                             contentDescription = "Editar Vehiculo",
@@ -173,7 +188,7 @@ fun VehiculoScreen(
                             Icon(
                                 imageVector = Icons.Default.Notifications,
                                 contentDescription = "Campana",
-                                tint = Color.White // o el color que quieras
+                                tint = Color.White
                             )
                             Text("Notificaciones")
                         }
@@ -187,7 +202,7 @@ fun VehiculoScreen(
                             Icon(
                                 imageVector = Icons.Default.History,
                                 contentDescription = "Campana",
-                                tint = Color.White // o el color que quieras
+                                tint = Color.White
                             )
                             Text("Historial")
                         }
@@ -197,7 +212,7 @@ fun VehiculoScreen(
                     Spacer(modifier = Modifier.height(24.dp))
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Next Maintenance Section
+
                     Text(text = "Proximos Mantenimientos", fontWeight = FontWeight.Bold)
                     if(calcularProximosMantenimientos(vehiculo.notificaciones, vehiculo.kilometros).isEmpty()) {
                         Text(text = "No hay notificaciones proximas")
@@ -215,14 +230,12 @@ fun VehiculoScreen(
                                     labelAux = "",
                                     aux= ""
                                 )
-//                                HorizontalDivider(thickness = 2.dp, color = Color.Gray)
                             }
                         }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // History Section
                     Text(text = "Mantenimientos", fontWeight = FontWeight.Bold)
                    if (vehiculo.notificaciones.isEmpty()) {
                        Text(
@@ -239,7 +252,6 @@ fun VehiculoScreen(
                                 aux = "${notificacion.kilometrosUltimoServicio}Km"
                             )
                             Spacer(modifier = Modifier.height(5.dp)) // "
-//                            HorizontalDivider(thickness = 1.dp, color = Color.Gray)
                         }
 
                     }

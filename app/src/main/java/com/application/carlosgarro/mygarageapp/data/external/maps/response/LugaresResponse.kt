@@ -3,7 +3,8 @@ package com.application.carlosgarro.mygarageapp.data.external.maps.response
 import com.google.gson.annotations.SerializedName
 
 data class NearbyPlacesResponse(
-    @SerializedName("results") val results: List<Lugar>
+    @SerializedName("results") val results: List<Lugar>?,
+    @SerializedName("status") val status: String?
 )
 
 data class Lugar(
@@ -13,29 +14,28 @@ data class Lugar(
     @SerializedName("opening_hours") val openingHours: OpeningHours?,
     @SerializedName("rating") val rating: Double?,
     @SerializedName("geometry") val geometry: Geometry?,
-    @SerializedName("place_id") val placeId: String
-
+    @SerializedName("place_id") val placeId: String?
 )
 
 data class Photo(
-    @SerializedName("photo_reference") val photoReference: String
+    @SerializedName("photo_reference") val photoReference: String?
 )
 
 data class OpeningHours(
-    @SerializedName("open_now") val openNow: Boolean
+    @SerializedName("open_now") val openNow: Boolean?
 )
 
 data class Geometry(
-    @SerializedName("location") val location: LatLngResult
+    @SerializedName("location") val location: LatLngResult?
 )
 
 data class LatLngResult(
-    @SerializedName("lat") val lat: Double,
-    @SerializedName("lng") val lng: Double
+    @SerializedName("lat") val lat: Double?,
+    @SerializedName("lng") val lng: Double?
 )
 
 data class PlaceDetailsResponse(
-    @SerializedName("result") val result: ReviewsListResponse
+    @SerializedName("result") val result: ReviewsListResponse?
 )
 
 data class ReviewsListResponse(
@@ -43,8 +43,8 @@ data class ReviewsListResponse(
 )
 
 data class ReviewsResponse(
-    @SerializedName("author_name") val authorName: String,
-    @SerializedName("rating") val rating: Int,
-    @SerializedName("text") val text: String,
-    @SerializedName("relative_time_description") val time: String
+    @SerializedName("author_name") val authorName: String?,
+    @SerializedName("rating") val rating: Int?,
+    @SerializedName("text") val text: String?,
+    @SerializedName("relative_time_description") val time: String?
 )

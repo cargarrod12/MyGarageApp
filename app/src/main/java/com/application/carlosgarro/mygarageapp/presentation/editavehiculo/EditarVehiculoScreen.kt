@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -45,6 +47,7 @@ import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.Veh
 import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
 import com.application.carlosgarro.mygarageapp.presentation.components.SelectorImagen
 import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
+import com.application.carlosgarro.mygarageapp.presentation.components.TopBarViewModel
 import com.application.carlosgarro.mygarageapp.presentation.home.DropdownSelector
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
 import com.application.carlosgarro.mygarageapp.ui.theme.Red
@@ -55,8 +58,11 @@ fun EditarVehiculoScreen(
     vehiculoId: Long,
     navigateToHome: () -> Unit,
     navigateToMapa: () -> Unit,
+    navigateToInitial: () -> Unit,
     navigateToVehiculo: (Long) -> Unit,
-    viewModel: EditarVehiculoViewModel = hiltViewModel()
+    viewModel: EditarVehiculoViewModel = hiltViewModel(),
+    topBarViewModel: TopBarViewModel = hiltViewModel(),
+    navigateToConsejo: () -> Unit = {},
 ) {
 
     val contexto = LocalContext.current
@@ -89,10 +95,13 @@ fun EditarVehiculoScreen(
 
     Scaffold(
         topBar = {
-            TopBar()
+            TopBar(
+                viewModel = topBarViewModel,
+                navigateToInitial = navigateToInitial,
+            )
         },
         bottomBar = {
-            BottomBar(0,navigateToHome, navigateToMapa)
+            BottomBar(0,navigateToHome, navigateToMapa, navigateToConsejo)
 
         },
     ) { padding ->
@@ -107,12 +116,20 @@ fun EditarVehiculoScreen(
         }
 
         if (isLoading) {
-            CircularProgressIndicator(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
-                color = Color.Blue
-            )
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(64.dp),
+                    color = Color.Blue
+                )
+                Spacer(modifier = Modifier.height(8.dp)) // Espacio entre círculo y texto
+                Text("Cargando datos...", color = Color.Black)
+            }
         } else {
 
             Column(

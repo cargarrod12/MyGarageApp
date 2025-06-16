@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
 
 @Composable
-fun BottomBar(indice: Int, navigateToHome: () -> Unit, navigateToMapa: () -> Unit) {
+fun BottomBar(indice: Int, navigateToHome: () -> Unit, navigateToMapa: () -> Unit, navigateToConsejo: () -> Unit) {
 
     val colorSeleccionado = Color.White
     val colorNoSeleccionado = Color(0x9FCCCCCC)
@@ -49,7 +49,7 @@ fun BottomBar(indice: Int, navigateToHome: () -> Unit, navigateToMapa: () -> Uni
         NavigationBarItem(
             selected =  indice == 2,
             onClick = {
-//                navigateToConsejo()
+                navigateToConsejo()
             },
             icon = { Icon(Icons.Default.Info, contentDescription = null, tint = if (indice == 2) colorSeleccionado else colorNoSeleccionado)  },
             label = { Text("Consejos", color = if (indice == 2) colorSeleccionado else colorNoSeleccionado) },

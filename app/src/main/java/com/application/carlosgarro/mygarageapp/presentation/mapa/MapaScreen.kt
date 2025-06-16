@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.application.carlosgarro.mygarageapp.core.construirFotoUrl
 import com.application.carlosgarro.mygarageapp.core.getApiKeyFromManifest
 import com.application.carlosgarro.mygarageapp.data.external.maps.client.PlacesService
@@ -34,6 +35,7 @@ import com.application.carlosgarro.mygarageapp.data.external.maps.response.Lugar
 import com.application.carlosgarro.mygarageapp.data.external.maps.response.ReviewsResponse
 import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
 import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
+import com.application.carlosgarro.mygarageapp.presentation.components.TopBarViewModel
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -49,16 +51,20 @@ import kotlinx.coroutines.launch
 fun MapaScreen(
     navigateToHome: () -> Unit = {},
     navigateToMapa: () -> Unit = {},
+    navigateToInitial: () -> Unit = {},
+    topBarViewModel: TopBarViewModel = hiltViewModel(),
+    navigateToConsejo: () -> Unit = {},
+
 ) {
     val context = LocalContext.current
     val apiKey = remember { getApiKeyFromManifest(context) }
 
     Scaffold(
         topBar = {
-            TopBar()
+            TopBar(topBarViewModel, navigateToInitial)
         },
         bottomBar = {
-            BottomBar(1, navigateToHome, navigateToMapa)
+            BottomBar(1, navigateToHome, navigateToMapa,navigateToConsejo)
         },
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
@@ -69,76 +75,6 @@ fun MapaScreen(
         }
     }
 }
-
-//@Composable
-//fun Mapa(context: Context) {
-//    val context = LocalContext.current
-//    val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
-//
-//    var userLocation by remember { mutableStateOf<LatLng?>(null) }
-//    val cameraPositionState = rememberCameraPositionState()
-//
-//    var hasLocationPermission by remember {
-//        mutableStateOf(
-//            ActivityCompat.checkSelfPermission(
-//                context,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        )
-//    }
-//
-//    // Launcher para pedir el permiso
-//    val locationPermissionLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.RequestPermission(),
-//        onResult = { isGranted ->
-//            hasLocationPermission = isGranted
-//            if (isGranted) {
-//                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-//                    location?.let {
-//                        val latLng = LatLng(it.latitude, it.longitude)
-//                        userLocation = latLng
-//                        cameraPositionState.position = CameraPosition.fromLatLngZoom(latLng, 16f)
-//                    }
-//                }
-//            }
-//        }
-//    )
-//
-//    // Solo se ejecuta una vez al entrar
-//    LaunchedEffect(Unit) {
-//        if (!hasLocationPermission) {
-//            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-//        } else {
-//            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-//                location?.let {
-//                    val latLng = LatLng(it.latitude, it.longitude)
-//                    userLocation = latLng
-//                    cameraPositionState.position = CameraPosition.fromLatLngZoom(latLng, 16f)
-//                }
-//            }
-//        }
-//    }
-//
-//    // Mostrar el mapa solo si ya tenemos permisos
-//    if (hasLocationPermission) {
-//        GoogleMap(
-//            modifier = Modifier.fillMaxSize(),
-//            cameraPositionState = cameraPositionState,
-//            properties = MapProperties(isMyLocationEnabled = true)
-//        ) {
-//        }
-//    } else {
-//        // Puedes mostrar una pantalla de carga o texto informativo si quieres
-//        Box(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(16.dp),
-//            contentAlignment = Alignment.Center
-//        ) {
-//            Text("Esperando permiso de ubicación...")
-//        }
-//    }
-//}
 
 
 @Composable
@@ -198,13 +134,17 @@ fun MapaTalleresScreen(apiKey: String) {
                     cameraPositionState.position = CameraPosition.fromLatLngZoom(latLng, 16f)
                     // Llamada a la API
                     if(apiKey.isNotEmpty()) {
+                        Log.i("MAPA", "API Key: $apiKey")
                         // Llamada a la API de Google Places para obtener talleres cercanos
                         scope.launch {
                             val locationString = "${latLng.latitude},${latLng.longitude}"
+                            Log.i("MAPA", "Obteniendo talleres cercanos a: $locationString")
                             try {
                                 val response =
                                     placesApi.getNearbyCarRepair(locationString, apiKey = apiKey)
-                                talleres = response.results
+                                talleres = response.results!!
+                                Log.i("MAPA", "Talleres encontrados: $response")
+                                Log.i("MAPA", "Talleres encontrados: ${response.status}")
                             } catch (e: Exception) {
                                 Log.e("MAPA", "Error: ${e.localizedMessage}")
                             }
@@ -264,23 +204,29 @@ fun MapaTalleresScreen(apiKey: String) {
                     try {
                         Log.i("MAPA", "Obteniendo reseñas para el taller: ${taller.placeId}")
                         val response =
-                            placesApi.getPlaceReviews(
-                                placeId = taller.placeId,
-                                apiKey = apiKey
-                            )
-                        reviews = response.result.reviews ?: emptyList()
-                        Log.i("MAPA", "Reviews: ${response.result.reviews?.size ?: 0}")
+                            taller.placeId?.let {
+                                placesApi.getPlaceReviews(
+                                    placeId = it,
+                                    apiKey = apiKey
+                                )
+                            }
+                        if (response != null) {
+                            reviews = response.result?.reviews ?: emptyList()
+                            Log.i("MAPA", "Reviews: ${response.result?.reviews?.size ?: 0}")
+                        }
                     } catch (e: Exception) {
                         Log.e("MAPA", "Error: ${e.localizedMessage}")
                     }
                 }
                 InfoTaller(
+                    placeId = taller.placeId?: "",
                     nombre = taller.name ?: "Sin nombre",
                     direccion = taller.vicinity ?: "Sin dirección",
                     abierto = taller.openingHours?.openNow ?: false,
                     rating = taller.rating,
                     fotoUrl = fotoUrl,
                     reviews = reviews,
+                    context = context
                 )
             }
         }

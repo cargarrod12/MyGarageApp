@@ -1,5 +1,6 @@
 package com.application.carlosgarro.mygarageapp
 
+import Consejo
 import EditarVehiculo
 import Historial
 import Home
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.application.carlosgarro.mygarageapp.presentation.consejo.ConsejoScreen
 import com.application.carlosgarro.mygarageapp.presentation.editavehiculo.EditarVehiculoScreen
 import com.application.carlosgarro.mygarageapp.presentation.historial.HistorialScreen
 import com.application.carlosgarro.mygarageapp.presentation.home.HomeScreen
@@ -28,7 +30,12 @@ import com.google.firebase.auth.FirebaseAuth
 @Composable
 fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth) {
 
-    NavHost(navController = navHostController, startDestination = Initial) {
+
+    val start = if (auth.currentUser == null) Initial else Home(name ="")
+
+
+
+    NavHost(navController = navHostController, startDestination = start) {
         composable<Initial> {
             InitialScreen(
                 navigateToLogin = { navHostController.navigate(Login) },
@@ -60,7 +67,9 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
                 navigateToMapa = { navHostController.navigate(Mapa) },
                 navigateToEditarVehiculo = { id ->
                     navHostController.navigate(EditarVehiculo(id = id))
-                }
+                },
+                navigateToInitial = { navHostController.navigate(Initial) },
+                navigateToConsejo = { navHostController.navigate(Consejo) },
             )
         }
         composable<Vehiculo> { backStackEntry ->
@@ -77,7 +86,9 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
                 navigateToMapa = { navHostController.navigate(Mapa) },
                 navigateToEditarVehiculo = { id ->
                     navHostController.navigate(EditarVehiculo(id = id))
-                }
+                },
+                navigateToInitial = { navHostController.navigate(Initial) },
+                navigateToConsejo = { navHostController.navigate(Consejo) },
             )
         }
 
@@ -89,6 +100,8 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
                 vehiculo = nombreVehiculo,
                 navigateToHome = { navHostController.navigate(Home(name = ""))},
                 navigateToMapa = { navHostController.navigate(Mapa) },
+                navigateToInitial = { navHostController.navigate(Initial) },
+                navigateToConsejo = { navHostController.navigate(Consejo) },
             )
         }
 
@@ -100,13 +113,18 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
                 nombreVehiculo = nombreVehiculo,
                 navigateToHome = { navHostController.navigate(Home(name = ""))},
                 navigateToMapa = { navHostController.navigate(Mapa) },
+                navigateToInitial = { navHostController.navigate(Initial) },
+                navigateToConsejo = { navHostController.navigate(Consejo) },
+
             )
         }
 
         composable<Mapa> {
              MapaScreen(
-                navigateToHome = { navHostController.navigate(Home(name = "")) },
-                 navigateToMapa = {}
+                 navigateToHome = { navHostController.navigate(Home(name = "")) },
+                 navigateToMapa = {},
+                 navigateToInitial = { navHostController.navigate(Initial) },
+                 navigateToConsejo = { navHostController.navigate(Consejo) },
              )
         }
 
@@ -118,6 +136,17 @@ fun NavigationWrapper(navHostController: NavHostController,  auth: FirebaseAuth)
                 navigateToVehiculo = {navHostController.navigate(Vehiculo(id = id))
                 },
                 vehiculoId = id,
+                navigateToInitial = { navHostController.navigate(Initial) },
+                navigateToConsejo = { navHostController.navigate(Consejo) },
+            )
+        }
+
+        composable<Consejo> {
+            ConsejoScreen(
+                navigateToHome = { navHostController.navigate(Home(name = "")) },
+                navigateToMapa = { navHostController.navigate(Mapa) },
+                navigateToInitial = { navHostController.navigate(Initial) },
+                navigateToConsejo = { navHostController.navigate(Consejo) },
             )
         }
 

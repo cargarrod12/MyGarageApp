@@ -18,9 +18,11 @@ fun MantenimientoModel.toEntity(): MantenimientoEntity {
         id = id?: 0L,
         vehiculoPersonalId = vehiculoId,
         tipoServicio = tipoServicio,
-        fechaServicio = fechaServicio,
+        fechaServicio = fechaServicio.toString(),
         kilometrosServicio = kilometrosServicio,
-        precio = precio
+        precio = precio,
+        fechaUltModificacion = LocalDate.now().toString()
+
     )
 }
 
@@ -29,7 +31,7 @@ fun MantenimientoEntity.toModel(): MantenimientoModel {
         id = id,
         vehiculoId = vehiculoPersonalId,
         tipoServicio = tipoServicio,
-        fechaServicio = fechaServicio,
+        fechaServicio = LocalDate.parse(fechaServicio),
         kilometrosServicio = kilometrosServicio,
         precio = precio
     )

@@ -56,11 +56,11 @@ class Converters {
 
     /// Convertidor para LocalDate
     @TypeConverter
-    fun fromLocalDate(date: java.time.LocalDate): String {
+    fun fromLocalDate(date: LocalDate): String {
         return date.toString()
     }
     @TypeConverter
-    fun toLocalDate(dateString: String): LocalDate {
-        return LocalDate.parse(dateString)
+    fun toLocalDate(dateString: String?): LocalDate? {
+        return dateString?.let { LocalDate.parse(it) }
     }
 }

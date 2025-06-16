@@ -2,7 +2,6 @@ package com.application.carlosgarro.mygarageapp.presentation.home
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,9 +28,8 @@ class ResumenViewModel @Inject constructor(
     private val vehiculoRepository: VehiculoRepository
 ): ViewModel() {
 
-
-    private val _listaVehiculoPersonal = MutableLiveData<List<VehiculoPersonalModel>>(emptyList())  // mutable interna
-    val listaVehiculoPersonal: LiveData<List<VehiculoPersonalModel>> = _listaVehiculoPersonal // solo lectura pública
+    private val _listaVehiculoPersonal = MutableLiveData<List<VehiculoPersonalModel>>(emptyList())
+    val listaVehiculoPersonal: LiveData<List<VehiculoPersonalModel>> = _listaVehiculoPersonal
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -51,13 +49,11 @@ class ResumenViewModel @Inject constructor(
     private val _imagenSeleccionadaUri = MutableLiveData<Uri>(null)
     val imagenSeleccionadaUri: LiveData<Uri?> = _imagenSeleccionadaUri
 
-
-
     init {
         cargaVechiculos()
     }
 
-    private fun cargaVechiculos() {
+    fun cargaVechiculos() {
         viewModelScope.launch {
 
             val usuarioEmail = firebaseAuth.currentUser?.email
@@ -67,17 +63,14 @@ class ResumenViewModel @Inject constructor(
                         is Resource.Loading -> {
                             _listaVehiculoPersonal.value = emptyList()
                             _isLoading.value = true
-                            Log.i("RESUMEN", "Loading VehiculosPersonalesByUSer: ${resource.data}")
                         }
                         is Resource.Success -> {
                             _listaVehiculoPersonal.value = resource.data ?: emptyList()
                             _isLoading.value = false
-                            Log.i("RESUMEN", "Success: ${resource.data}")
                         }
                         is Resource.Error -> {
                             _listaVehiculoPersonal.value = emptyList()
                             _isLoading.value = false
-                            Log.e("RESUMEN", "Error: ${resource.message}")
                         }
                     }
                 }
@@ -89,7 +82,6 @@ class ResumenViewModel @Inject constructor(
 
     }
     fun setImagenDesdeUri(context: Context, uri: Uri) {
-        Log.i("Imagen", "Inicio de lectura de imagen desde URI: $uri")
         _imagenSeleccionadaUri.value = uri
         try {
             context.contentResolver.openInputStream(uri)?.use { input ->
@@ -97,7 +89,7 @@ class ResumenViewModel @Inject constructor(
                 _imagenSeleccionada.value = bytes
             }
         } catch (e: Exception) {
-            Log.e("Imagen", "Error leyendo imagen", e)
+            _imagenSeleccionada.value = null
         }
     }
 
@@ -110,17 +102,15 @@ class ResumenViewModel @Inject constructor(
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
-                            Log.i("NUEVO VEHICULO", "AÑADIENDO NUEVO VEHICULO: $data")
+                            //Log.i("NUEVO VEHICULO", "AÑADIENDO NUEVO VEHICULO: $data")
                         }
                         is Resource.Success -> {
                             _isLoading.value = false
-                            Log.i("NUEVO VEHICULO", "Success: VEHICULO AÑADIDO ${resource.data}")
                             cargaVechiculos()
                             _eventoMensaje.emit("Vehículo añadido correctamente")
                         }
                         is Resource.Error -> {
                             _isLoading.value = false
-                            Log.e("NUEVO VEHICULO", "Error: ${resource.message}")
                             _eventoMensaje.emit("Error al añadir vehículo")
                         }
                     }

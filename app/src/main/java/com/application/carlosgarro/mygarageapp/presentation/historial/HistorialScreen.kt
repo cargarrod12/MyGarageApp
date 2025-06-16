@@ -4,17 +4,23 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -41,6 +47,7 @@ import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.Manten
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
 import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
+import com.application.carlosgarro.mygarageapp.presentation.components.TopBarViewModel
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
 
 
@@ -51,12 +58,16 @@ fun HistorialScreen(
     viewModel: HistorialViewModel = hiltViewModel(),
     navigateToHome: () -> Unit = {},
     navigateToMapa: () -> Unit = {},
+    navigateToInitial: () -> Unit = {},
+    topBarViewModel: TopBarViewModel = hiltViewModel(),
+    navigateToConsejo: () -> Unit = {},
 ) {
 
     val mantenimientos = viewModel.mantenimientos.observeAsState(emptyList()).value
     var mostrarFormulario by remember { mutableStateOf(false) }
     val mantenimiento by viewModel.mantenimiento.observeAsState(MantenimientoModel(vehiculoId = id))
     val vehiculoModel by viewModel.vehiculo.observeAsState(null)
+    val isLoading by viewModel.isLoading.observeAsState(true)
 
 
     val contexto = LocalContext.current
@@ -77,10 +88,13 @@ fun HistorialScreen(
 
     Scaffold(
         topBar = {
-            TopBar()
+            TopBar(
+                viewModel = topBarViewModel,
+                navigateToInitial = navigateToInitial
+            )
         },
         bottomBar = {
-            BottomBar(0, navigateToHome, navigateToMapa)
+            BottomBar(0, navigateToHome, navigateToMapa,navigateToConsejo)
 
         },
         floatingActionButton = {
@@ -152,7 +166,22 @@ fun HistorialScreen(
                 }
             )
             }
-            HistorialTab(padding = padding, nombreVehiculo = vehiculo, mantenimientos = mantenimientos)
+            if(isLoading){
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(64.dp),
+                        color = Color.Blue
+                    )
+                    Spacer(modifier = Modifier.height(8.dp)) // Espacio entre círculo y texto
+                    Text("Cargando datos...", color = Color.Black)
+                }
+            }else HistorialTab(padding = padding, nombreVehiculo = vehiculo, mantenimientos = mantenimientos)
         }
     }
 }

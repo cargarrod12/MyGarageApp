@@ -11,7 +11,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -60,6 +59,7 @@ import com.application.carlosgarro.mygarageapp.domain.model.notificacion.Notific
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
 import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
+import com.application.carlosgarro.mygarageapp.presentation.components.TopBarViewModel
 
 
 @Composable
@@ -69,7 +69,10 @@ fun HomeScreen(
     navigateToHistorial: (Long, String) -> Unit,
     navigateToHome: () -> Unit = {},
     navigateToMapa: () -> Unit = {},
-    navigateToEditarVehiculo: (Long) -> Unit = {}
+    navigateToInitial: () -> Unit = {},
+    navigateToConsejo: () -> Unit = {},
+    navigateToEditarVehiculo: (Long) -> Unit = {},
+    topBarViewModel: TopBarViewModel = hiltViewModel(),
     ) {
 
     val tabTitles = listOf("Resumen", "Mis Coches")
@@ -95,10 +98,13 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            TopBar()
+            TopBar(
+                viewModel = topBarViewModel,
+                navigateToInitial = navigateToInitial,
+            )
         },
         bottomBar = {
-            BottomBar(0,navigateToHome, navigateToMapa)
+            BottomBar(0,navigateToHome, navigateToMapa,navigateToConsejo)
 
         },
         floatingActionButton = {
@@ -120,13 +126,22 @@ fun HomeScreen(
         }
     ) { padding ->
 
-        if (isLoading == true) {
-            CircularProgressIndicator(
+        if (isLoading) {
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
-                color = Color.Blue
-            )
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(64.dp),
+                    color = Color.Blue
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Cargando datos...", color = Color.Black)
+            }
+
         } else {
             Column(
                 modifier = Modifier.padding(padding)
@@ -169,7 +184,7 @@ fun HomeScreen(
                     )
                 }else{
                     if (selectedTab == 0) {
-                        ResumenTab(padding, listaVehiculosPersonales, navigateToVehiculo, navigateToHistorial)
+                        ResumenTab(listaVehiculosPersonales, navigateToVehiculo, navigateToHistorial)
                     } else {
                         MisCochesTab(padding, listaVehiculosPersonales, navigateToEditarVehiculo)
                     }
@@ -265,7 +280,10 @@ fun CocheCard(
 
 
 @Composable
-fun ResumenTab(padding: PaddingValues, registros: List<VehiculoPersonalModel>, navigateToVehiculo: (Long) -> Unit, navigateToHistorial: (Long, String) -> Unit) {
+fun ResumenTab(
+    registros: List<VehiculoPersonalModel>,
+    navigateToVehiculo: (Long) -> Unit,
+    navigateToHistorial: (Long, String) -> Unit) {
     LazyColumn(
         modifier = Modifier
             .padding(16.dp)

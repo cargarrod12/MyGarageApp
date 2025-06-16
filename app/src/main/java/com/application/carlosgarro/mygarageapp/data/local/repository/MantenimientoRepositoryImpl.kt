@@ -1,6 +1,5 @@
 package com.application.carlosgarro.mygarageapp.data.local.repository
 
-import android.util.Log
 import com.application.carlosgarro.mygarageapp.data.local.dao.MantenimientoDAO
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.MantenimientoModel
 import com.application.carlosgarro.mygarageapp.domain.model.mantenimiento.toEntity
@@ -16,19 +15,19 @@ class MantenimientoRepositoryImpl @Inject constructor(
             val result = mantenimientoDao.getMantenimientosByVehiculoId(vehiculoPersonalId)
             return result.map { it.toModel() }
         }catch (e: Exception){
-            Log.e("MantenimientoRepositoryImpl", "Error fetching mantenimientos by VehiculoPersonal: ${e.message}")
+            println(e.message)
         }
         return emptyList()
     }
 
     override suspend fun saveMantenimiento(mantenimiento: MantenimientoModel): Boolean {
         try {
-            val result = mantenimientoDao.insertMantenimiento(
+            val result = mantenimientoDao.insert(
                 mantenimiento.toEntity()
             )
             return result.toInt() != -1
         }catch (e: Exception){
-            Log.e("MantenimientoRepositoryImpl", "Error saving mantenimiento: ${e.message}")
+            println(e.message)
         }
         return false
     }

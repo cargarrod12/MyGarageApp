@@ -2,6 +2,7 @@ package com.application.carlosgarro.mygarageapp.domain.model.notificacion
 
 import com.application.carlosgarro.mygarageapp.core.enums.TipoServicio
 import com.application.carlosgarro.mygarageapp.data.local.entity.NotificacionEntity
+import java.time.LocalDate
 
 data class NotificacionModel(
     val id: Long? = 0L,
@@ -24,7 +25,8 @@ fun NotificacionModel.toEntity(): NotificacionEntity {
         kilometrosUltimoServicio = kilometrosUltimoServicio,
         kilometrosProximoServicio = kilometrosProximoServicio,
         notificado = notificado,
-        activo = activo
+        activo = activo,
+        fechaUltModificacion = LocalDate.now().toString()
     )
 }
 

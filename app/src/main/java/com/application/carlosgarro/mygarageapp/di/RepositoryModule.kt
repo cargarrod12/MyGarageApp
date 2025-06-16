@@ -1,12 +1,12 @@
 package com.application.carlosgarro.mygarageapp.di
 
-import com.application.carlosgarro.mygarageapp.data.local.repository.ConsejoRepositoryImpl
+//import com.application.carlosgarro.mygarageapp.data.local.repository.ConsejoRepositoryImpl
 import com.application.carlosgarro.mygarageapp.data.local.repository.MantenimientoRepositoryImpl
 import com.application.carlosgarro.mygarageapp.data.local.repository.NotificacionRepositoryImpl
 import com.application.carlosgarro.mygarageapp.data.local.repository.ReglaMantenimientoRepositoryImpl
 import com.application.carlosgarro.mygarageapp.data.local.repository.VehiculoPersonalRepositoryImpl
 import com.application.carlosgarro.mygarageapp.data.local.repository.VehiculoRepositoryImpl
-import com.application.carlosgarro.mygarageapp.domain.repository.ConsejoRepository
+//import com.application.carlosgarro.mygarageapp.domain.repository.ConsejoRepository
 import com.application.carlosgarro.mygarageapp.domain.repository.MantenimientoRepository
 import com.application.carlosgarro.mygarageapp.domain.repository.NotificacionRepository
 import com.application.carlosgarro.mygarageapp.domain.repository.ReglaMantenimientoRepository
@@ -52,9 +52,9 @@ abstract class RepositoryModule {
        notificacionRepository: NotificacionRepositoryImpl
     ): NotificacionRepository
 
-    @Singleton
-    @Binds
-    abstract fun bindConsejoRepository(
-        consejoRepository: ConsejoRepositoryImpl
-    ): ConsejoRepository
+//    @Singleton
+//    @Binds
+//    abstract fun bindConsejoRepository(
+//        consejoRepository: ConsejoRepositoryImpl
+//    ): ConsejoRepository
 }

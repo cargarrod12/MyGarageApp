@@ -99,17 +99,17 @@ fun InitialScreen(navigateToLogin: () -> Unit = {}, navigateToSignUp: () -> Unit
             },
             )
         Spacer(modifier = Modifier.height(8.dp))
-        CustomButton(
-            modifier = Modifier.clickable {  },
-            painter = painterResource(id = R.drawable.google),
-            title = "Continuar con Google"
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        CustomButton(
-            modifier = Modifier.clickable {  },
-            painter = painterResource(id = R.drawable.facebook),
-            title = "Continuar con Facebook"
-        )
+//        CustomButton(
+//            modifier = Modifier.clickable {  },
+//            painter = painterResource(id = R.drawable.google),
+//            title = "Continuar con Google"
+//        )
+//        Spacer(modifier = Modifier.height(8.dp))
+//        CustomButton(
+//            modifier = Modifier.clickable {  },
+//            painter = painterResource(id = R.drawable.facebook),
+//            title = "Continuar con Facebook"
+//        )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "Iniciar sesión",

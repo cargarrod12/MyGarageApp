@@ -1,6 +1,5 @@
 package com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.usecases
 
-import android.util.Log
 import com.application.carlosgarro.mygarageapp.domain.model.Resource
 import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.VehiculoPersonalModel
 import com.application.carlosgarro.mygarageapp.domain.repository.VehiculoPersonalRepository
@@ -12,7 +11,6 @@ class getVehiculoByIdUseCase @Inject constructor(
     private val repository: VehiculoPersonalRepository
 ){
     operator fun invoke(id: Long): Flow<Resource<VehiculoPersonalModel>> = flow {
-                Log.i("getVehiculoByIdUseCase", "ID: $id")
         try {
             emit(Resource.Loading())
             emit(

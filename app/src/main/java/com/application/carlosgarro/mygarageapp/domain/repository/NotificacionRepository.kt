@@ -13,5 +13,7 @@ interface NotificacionRepository {
 
     suspend fun updateNotificaciones(notificaciones: List<NotificacionModel>): Boolean?
 
+    suspend fun getNotificacionesByUserToNotify(userEmail: String, vehiculos: Long): List<NotificacionModel>
+
 
 }

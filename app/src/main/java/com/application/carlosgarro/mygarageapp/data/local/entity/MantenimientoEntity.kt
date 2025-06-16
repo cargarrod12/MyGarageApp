@@ -26,7 +26,7 @@ import java.time.LocalDate
 data class MantenimientoEntity(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
+    override val id: Long = 0L,
 
     @TypeConverters(Converters::class)
     val tipoServicio: TipoServicio,
@@ -34,9 +34,36 @@ data class MantenimientoEntity(
     val vehiculoPersonalId: Long,
 
     @TypeConverters(Converters::class)
-    val fechaServicio: LocalDate,
+    val fechaServicio: String,
 
     val kilometrosServicio: Int,
 
     val precio: Double,
-)
+
+    @TypeConverters(Converters::class)
+    override val fechaUltModificacion: String? = null,
+): BaseEntity{
+
+    constructor(): this(
+        id = 0L,
+        tipoServicio = TipoServicio.OTRO,
+        vehiculoPersonalId = 0L,
+        fechaServicio = LocalDate.now().toString(),
+        kilometrosServicio = 0,
+        precio = 0.0,
+        fechaUltModificacion = null
+    )
+
+    override fun toFirestore(): Map<String, Any?> {
+        return mapOf(
+            "id" to id,
+            "tipoServicio" to tipoServicio,
+            "vehiculoPersonalId" to vehiculoPersonalId,
+            "fechaServicio" to fechaServicio,
+            "kilometrosServicio" to kilometrosServicio,
+            "precio" to precio,
+            "fechaUltModificacion" to fechaUltModificacion
+        )
+    }
+
+}

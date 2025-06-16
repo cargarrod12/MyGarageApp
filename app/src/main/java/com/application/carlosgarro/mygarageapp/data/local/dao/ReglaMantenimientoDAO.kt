@@ -6,11 +6,17 @@ import com.application.carlosgarro.mygarageapp.data.local.entity.ReglaMantenimie
 
 
 @Dao
-interface ReglaMantenimientoDAO {
+interface ReglaMantenimientoDAO : BaseDAO<ReglaMantenimientoEntity> {
+
+    @Query("SELECT * FROM regla_mantenimiento")
+     suspend fun getAllReglasMantenimiento(): List<ReglaMantenimientoEntity>
 
     @Query("SELECT * FROM regla_mantenimiento WHERE vehiculoId = :vehiculoPersonalId AND tipoServicio = :tipoServicio")
-    suspend fun getReglaMantenimientoByVehiculoPersonalAndTipoServicio(
+     suspend fun getReglaMantenimientoByVehiculoPersonalAndTipoServicio(
         vehiculoPersonalId: Long,
         tipoServicio: String
     ): ReglaMantenimientoEntity?
+
+//    @Upsert
+//    abstract suspend fun insert(reglaMantenimiento: ReglaMantenimientoEntity): Long
 }

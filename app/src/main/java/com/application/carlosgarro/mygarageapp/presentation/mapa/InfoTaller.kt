@@ -1,7 +1,10 @@
 package com.application.carlosgarro.mygarageapp.presentation.mapa
 
-import androidx.compose.foundation.Image
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,6 +37,7 @@ import com.application.carlosgarro.mygarageapp.data.external.maps.response.Revie
 
 @Composable
 fun InfoTaller(
+    placeId: String,
     nombre: String,
     direccion: String,
     abierto: Boolean,
@@ -41,6 +45,7 @@ fun InfoTaller(
     fotoUrl: String?,
     reviews: List<ReviewsResponse>,
     modifier: Modifier = Modifier,
+    context: Context
 ) {
     LazyColumn(
         modifier = modifier
@@ -97,8 +102,28 @@ fun InfoTaller(
                                 color = if (abierto) Color(0xFF4CAF50) else Color.Red,
                                 style = MaterialTheme.typography.bodyMedium
                             )
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                contentAlignment = Alignment.BottomEnd,
+                            ) {
+                                Text(
+                                    text = "Dejar una reseña",
+                                    color = MaterialTheme.colorScheme.primary,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    modifier = Modifier
+                                        .clickable {
+                                            val intent = Intent(Intent.ACTION_VIEW,Uri.parse("https://search.google.com/local/writereview?placeid=$placeId"))
+                                            context.startActivity(intent)
+                                        }
+                                        .padding(8.dp)
+                                )
+                            }
                         }
                     }
+
                 }
             }
 
@@ -135,16 +160,16 @@ fun ReviewItem(review: ReviewsResponse) {
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Text(text = review.authorName, style = MaterialTheme.typography.bodyMedium)
+            Text(text = review.authorName?:"", style = MaterialTheme.typography.bodyMedium)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                repeat(review.rating) {
+                repeat(review.rating ?: 0) {
                     Icon(Icons.Default.Star, contentDescription = null, tint = Color(0xFFFFC107), modifier = Modifier.size(16.dp))
                 }
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = review.time, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                review.time?.let { Text(text = it, style = MaterialTheme.typography.bodySmall, color = Color.Gray) }
             }
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = review.text, style = MaterialTheme.typography.bodySmall)
+            review.text?.let { Text(text = it, style = MaterialTheme.typography.bodySmall) }
         }
     }
 }

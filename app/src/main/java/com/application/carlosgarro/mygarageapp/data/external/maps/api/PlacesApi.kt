@@ -9,7 +9,7 @@ interface PlacesApi {
     @GET("maps/api/place/nearbysearch/json")
     suspend fun getNearbyCarRepair(
         @Query("location") location: String,
-        @Query("radius") radius: Int = 2000,
+        @Query("radius") radius: Int = 3000,
         @Query("type") type: String = "car_repair",
         @Query("key") apiKey: String
     ): NearbyPlacesResponse

@@ -1,6 +1,5 @@
 package com.application.carlosgarro.mygarageapp.presentation.historial
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -59,23 +58,23 @@ class HistorialViewModel @Inject constructor(
     private fun cagaMantenimientos() {
         viewModelScope.launch {
             if (_vehiculoId.value != null) {
-                Log.i("PANTALLA HISTORIAL", "ID: ${_vehiculoId.value}")
+                //Log.i("PANTALLA HISTORIAL", "ID: ${_vehiculoId.value}")
                 getMantenimientosByVehiculoPersonal(_vehiculoId.value!!).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
-                            Log.i("PANTALLA HISTORIAL", "Loading Mantenimientos: ${resource.data}")
+                            //Log.i("PANTALLA HISTORIAL", "Loading Mantenimientos: ${resource.data}")
                         }
 
                         is Resource.Success -> {
                             _mantenimientos.value = resource.data ?: emptyList()
                             _isLoading.value = false
-                            Log.i("PANTALLA HISTORIAL", "Success Mantenimientos: ${resource.data}")
+                            //Log.i("PANTALLA HISTORIAL", "Success Mantenimientos: ${resource.data}")
                         }
 
                         is Resource.Error -> {
                             _isLoading.value = false
-                            Log.e("PANTALLA HISTORIAL", "Error Mantenimientos: ${resource.message}")
+                            //Log.e("PANTALLA HISTORIAL", "Error Mantenimientos: ${resource.message}")
                         }
                     }
 
@@ -83,18 +82,18 @@ class HistorialViewModel @Inject constructor(
                         when (resource) {
                             is Resource.Loading -> {
                                 _isLoading.value = true
-                                Log.i("PANTALLA HISTORIAL", "Loading VehiculoPersonal: ${resource.data}")
+                                //Log.i("PANTALLA HISTORIAL", "Loading VehiculoPersonal: ${resource.data}")
                             }
 
                             is Resource.Success -> {
                                 _vehiculo.value = resource.data
                                 _isLoading.value = false
-                                Log.i("PANTALLA HISTORIAL", "Success: ${resource.data}")
+                                //Log.i("PANTALLA HISTORIAL", "Success: ${resource.data}")
                             }
 
                             is Resource.Error -> {
                                 _isLoading.value = false
-                                Log.e("PANTALLA HISTORIAL", "Error: ${resource.message}")
+                                //Log.e("PANTALLA HISTORIAL", "Error: ${resource.message}")
                             }
                         }
                     }
@@ -102,7 +101,7 @@ class HistorialViewModel @Inject constructor(
 
 
             } else {
-                Log.i("HISTORIAL", "ID: ${_vehiculoId.value}")
+                //Log.i("HISTORIAL", "ID: ${_vehiculoId.value}")
             }
 
         }
@@ -111,22 +110,23 @@ class HistorialViewModel @Inject constructor(
     fun addEntradaMantenimiento(value: MantenimientoModel) {
         viewModelScope.launch {
             val data = value.copy(vehiculoId = _vehiculoId.value!!)
+            println(data)
             saveMantenimientoUseCase(data).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         _isLoading.value = true
-                        Log.i(
-                            "NUEVA ENTRADA HISTORIAL",
-                            "AÑADIENDO NUEVA ENTRADA HISTORIAL: $data"
-                        )
+                        //Log.i(
+//                            "NUEVA ENTRADA HISTORIAL",
+//                            "AÑADIENDO NUEVA ENTRADA HISTORIAL: $data"
+//                        )
                     }
 
                     is Resource.Success -> {
                         _isLoading.value = false
-                        Log.i(
-                            "NUEVA ENTRADA HISTORIAL",
-                            "Success: ENTRADA HISTORIAL AÑADIDA ${resource.data}"
-                        )
+                        //Log.i(
+//                            "NUEVA ENTRADA HISTORIAL",
+//                            "Success: ENTRADA HISTORIAL AÑADIDA ${resource.data}"
+//                        )
                         val result = resource.data
                         cagaMantenimientos()
                         getNotificacion(data)
@@ -135,7 +135,7 @@ class HistorialViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _isLoading.value = false
-                        Log.e("NUEVA ENTRADA HISTORIAL", "Error: ${resource.message}")
+                        //Log.e("NUEVA ENTRADA HISTORIAL", "Error: ${resource.message}")
                         _eventoMensaje.emit("Error al añadir nueva entrada del Historial")
                     }
                 }
@@ -157,25 +157,25 @@ class HistorialViewModel @Inject constructor(
                 when (resource) {
                     is Resource.Loading -> {
                         _isLoading.value = true
-                        Log.i("NUEVA ENTRADA HISTORIAL", "Loading Notificacion: ${resource.data}")
+                        //Log.i("NUEVA ENTRADA HISTORIAL", "Loading Notificacion: ${resource.data}")
                     }
 
                     is Resource.Success -> {
                         val notificacion = resource.data
                         if (notificacion != null) {
-                            Log.i("NUEVA ENTRADA HISTORIAL", "Success: ${resource.data}")
+                            //Log.i("NUEVA ENTRADA HISTORIAL", "Success: ${resource.data}")
                         } else {
-                            Log.i(
-                                "NUEVA ENTRADA HISTORIAL",
-                                "Success: CREAMOS UNA NUEVA NOTIFICACION"
-                            )
+                            //Log.i(
+//                                "NUEVA ENTRADA HISTORIAL",
+//                                "Success: CREAMOS UNA NUEVA NOTIFICACION"
+//                            )
                             getReglaMantenimiento(mantenmiento, _vehiculo.value?.id!!)
                         }
                     }
 
                     is Resource.Error -> {
                         _isLoading.value = false
-                        Log.e("NUEVA ENTRADA HISTORIAL", "Error: ${resource.message}")
+                        //Log.e("NUEVA ENTRADA HISTORIAL", "Error: ${resource.message}")
                     }
                 }
 
@@ -190,8 +190,8 @@ class HistorialViewModel @Inject constructor(
             vehiculoId: Long,
         ) {
             viewModelScope.launch {
-                Log.i("NUEVA ENTRADA HISTORIAL", "VehiculoId: $vehiculoId" +
-                        " TipoServicio: ${mantenmiento.tipoServicio}")
+                //Log.i("NUEVA ENTRADA HISTORIAL", "VehiculoId: $vehiculoId" +
+//                        " TipoServicio: ${mantenmiento.tipoServicio}")
                 getReglaMantenimientoByVehiculoPersonalAndTipoServicio(
                     vehiculoId,
                     mantenmiento.tipoServicio
@@ -199,28 +199,28 @@ class HistorialViewModel @Inject constructor(
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
-                            Log.i(
-                                "NUEVA ENTRADA HISTORIAL",
-                                "Loading ReglaMantenimiento: ${resource.data}"
-                            )
+//                            //Log.i(
+//                                "NUEVA ENTRADA HISTORIAL",
+//                                "Loading ReglaMantenimiento: ${resource.data}"
+//                            )
                         }
 
                         is Resource.Success -> {
                             val reglaMantenimiento = resource.data
                             if (reglaMantenimiento != null) {
-                                Log.i("NUEVA ENTRADA HISTORIAL", "Success: ${resource.data}")
+                                //Log.i("NUEVA ENTRADA HISTORIAL", "Success: ${resource.data}")
                                 addNuevaNotificacion(mantenmiento, reglaMantenimiento)
                             } else {
-                                Log.i(
-                                    "NUEVA ENTRADA HISTORIAL",
-                                    "Success: NO HAY REGLA DE MANTENIMIENTO"
-                                )
+//                                //Log.i(
+//                                    "NUEVA ENTRADA HISTORIAL",
+//                                    "Success: NO HAY REGLA DE MANTENIMIENTO"
+//                                )
                             }
                         }
 
                         is Resource.Error -> {
                             _isLoading.value = false
-                            Log.e("NUEVA ENTRADA HISTORIAL", "Error: ${resource.message}")
+                            //Log.e("NUEVA ENTRADA HISTORIAL", "Error: ${resource.message}")
                         }
                     }
                 }
@@ -246,26 +246,26 @@ class HistorialViewModel @Inject constructor(
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
-                            Log.i(
-                                "NUEVA ENTRADA HISTORIAL",
-                                "Loading NUEVA NOTIFICACION: ${resource.data}"
-                            )
+//                            //Log.i(
+//                                "NUEVA ENTRADA HISTORIAL",
+//                                "Loading NUEVA NOTIFICACION: ${resource.data}"
+//                            )
                         }
 
                         is Resource.Success -> {
                             _isLoading.value = false
-                            Log.i(
-                                "NUEVA ENTRADA HISTORIAL",
-                                "Success NUEVA NOTIFICACION: ${resource.data}"
-                            )
+                            //Log.i(
+//                                "NUEVA ENTRADA HISTORIAL",
+//                                "Success NUEVA NOTIFICACION: ${resource.data}"
+//                            )
                         }
 
                         is Resource.Error -> {
                             _isLoading.value = false
-                            Log.e(
-                                "NUEVA ENTRADA HISTORIAL",
-                                "Error NUEVA NOTIFICACION: ${resource.message}"
-                            )
+                            //Log.e(
+//                                "NUEVA ENTRADA HISTORIAL",
+//                                "Error NUEVA NOTIFICACION: ${resource.message}"
+//                            )
                         }
                     }
                 }

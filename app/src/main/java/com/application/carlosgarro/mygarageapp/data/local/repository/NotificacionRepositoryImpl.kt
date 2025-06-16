@@ -1,12 +1,10 @@
 package com.application.carlosgarro.mygarageapp.data.local.repository
 
-import android.util.Log
 import com.application.carlosgarro.mygarageapp.core.enums.TipoServicio
 import com.application.carlosgarro.mygarageapp.data.local.dao.NotificacionDAO
 import com.application.carlosgarro.mygarageapp.domain.model.notificacion.NotificacionModel
 import com.application.carlosgarro.mygarageapp.domain.model.notificacion.toEntity
 import com.application.carlosgarro.mygarageapp.domain.model.notificacion.toModel
-import com.application.carlosgarro.mygarageapp.domain.model.vehiculopersonal.toModel
 import com.application.carlosgarro.mygarageapp.domain.repository.NotificacionRepository
 import javax.inject.Inject
 
@@ -27,12 +25,10 @@ class NotificacionRepositoryImpl @Inject constructor(
 
     override suspend fun saveNotificacion(notificacion: NotificacionModel): Boolean {
         try {
-            Log.i("NotificacionRepositoryImp", "Saving notificacion: $notificacion")
-            val result = notificacionDao.saveNotificacion(notificacion.toEntity())
-            Log.i("NotificacionRepositoryImp", "Notificacion saved with id: $result")
+            val result = notificacionDao.insert(notificacion.toEntity())
             return result.toInt() != -1
         }catch (e: Exception){
-            Log.e("NotificacionRepositoryImp", "Error saving notificacion: ${e.message}")
+            println(e.message)
         }
         return false
     }
@@ -44,13 +40,21 @@ class NotificacionRepositoryImpl @Inject constructor(
 
     override suspend fun updateNotificaciones(notificaciones: List<NotificacionModel>): Boolean {
         try {
-            Log.i("NotificacionRepositoryImp", "update notificaciones: $notificaciones")
             val result = notificacionDao.updateNotificaciones(notificaciones.map { it.toEntity() })
-            Log.i("NotificacionRepositoryImp", "Notificaciones saved: $result")
             return result != 0
         }catch (e: Exception){
-            Log.e("NotificacionRepositoryImp", "Error saving notificacion: ${e.message}")
+            println(e.message)
         }
         return false
+    }
+
+    override suspend fun getNotificacionesByUserToNotify(userEmail: String, vehiculo: Long): List<NotificacionModel> {
+        try {
+        val result = notificacionDao.getNotificacionesByUserToNotify(userEmail, vehiculo)
+        return result.map { it.toModel() }
+        }catch (e: Exception){
+            println(e.message)
+        }
+        return emptyList()
     }
 }

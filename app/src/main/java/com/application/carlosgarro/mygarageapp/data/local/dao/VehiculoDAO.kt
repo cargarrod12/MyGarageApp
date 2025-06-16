@@ -6,9 +6,12 @@ import com.application.carlosgarro.mygarageapp.data.local.entity.VehiculoEntity
 
 
 @Dao
-interface VehiculoDAO {
+interface VehiculoDAO : BaseDAO<VehiculoEntity> {
 
      @Query("SELECT * FROM vehiculo order by marca, modelo")
      suspend fun getAllVehiculos(): List<VehiculoEntity>
+//
+//     @Upsert
+//     suspend fun insert(vehiculo: VehiculoEntity): Long
 
 }

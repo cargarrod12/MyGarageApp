@@ -54,3 +54,4 @@ fun construirFotoUrl(photoReference: String, apiKey: String): String {
             "&photo_reference=$photoReference" +
             "&key=$apiKey"
 }
+

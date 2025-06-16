@@ -31,23 +31,33 @@ import java.time.LocalDate
     ]
 )
 data class VehiculoPersonalEntity(
-
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
-
-    val usuarioEmail: String,
-    val vehiculoId: Long,
-
+    @PrimaryKey(autoGenerate = true) override val id: Long = 0L,
+    val usuarioEmail: String = "",
+    val vehiculoId: Long = 0L,
+    val estado: EstadoVehiculo = EstadoVehiculo.NUEVO,
+    val anyo: Int = 0,
+    val kilometros: Int = 0,
+    val imagen: ByteArray? = null,
     @TypeConverters(Converters::class)
-    val estado: EstadoVehiculo,
+    override val fechaUltModificacion: String? = null,
+    val borrado : Boolean = false,
+): BaseEntity {
+    constructor() : this(0L, "", 0L, EstadoVehiculo.NUEVO, 0, 0, null, null, false)
 
-    val anyo: Int,
-    val kilometros: Int,
-    val imagen: ByteArray?,
 
-    @TypeConverters(Converters::class)
-    val fechaUltModificacion: LocalDate?
-) {
+    override fun toFirestore(): Map<String, Any?> {
+        return mapOf(
+            "usuarioEmail" to usuarioEmail,
+            "id" to id,
+            "vehiculoId" to vehiculoId,
+            "estado" to estado,
+            "anyo" to anyo,
+            "kilometros" to kilometros,
+            "fechaUltModificacion" to (fechaUltModificacion ?: LocalDate.now().toString()),
+            "borrado" to borrado,
+        )
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -75,4 +85,7 @@ data class VehiculoPersonalEntity(
         result = 31 * result + imagen.contentHashCode()
         return result
     }
+
+
+
 }

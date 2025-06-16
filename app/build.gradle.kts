@@ -10,10 +10,15 @@ plugins {
     alias(libs.plugins.jetBrainsKotlinSerialization)
 }
 
+
+
 android {
     namespace = "com.application.carlosgarro.mygarageapp"
     compileSdk = 35
 
+    buildFeatures{
+        buildConfig = true
+    }
     defaultConfig {
         applicationId = "com.application.carlosgarro.mygarageapp"
         minSdk = 24
@@ -22,7 +27,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "OPENAI_API_KEY", "\"${project.findProperty("OPENAI_API_KEY") ?: ""}\"")
     }
+
 
     buildTypes {
         release {
@@ -44,6 +52,7 @@ android {
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
@@ -59,6 +68,8 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.hilt.common)
+    implementation(libs.ads.mobile.sdk)
     ksp(libs.room.compiler)
 
     //Coil
@@ -75,12 +86,14 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.android.compose.material.icons)
+    implementation(libs.coroutines.core)
 
     //Hilt
     implementation(libs.dagger.hilt)
     implementation(libs.androidx.espresso.core)
     kapt(libs.dagger.hilt.compiler)
     implementation(libs.dagger.hilt.navigation.compose)
+    implementation(libs.dagger.hilt.work)
 
     //Map
     implementation(libs.google.maps)
@@ -95,8 +108,20 @@ dependencies {
 
     implementation(libs.kotlin.serialization)
 
+    //WorkManager
+//    implementation(libs.androidx.work.runtime)
+    implementation(libs.androidx.work.runtime.ktx)
+//    kapt(libs.androidx.hilt.compiler)
+
+
     //Junit
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.coroutines.testing)
+    testImplementation(libs.cash.turbine)
+    testImplementation(libs.arch)
+    testImplementation(libs.robolectric)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

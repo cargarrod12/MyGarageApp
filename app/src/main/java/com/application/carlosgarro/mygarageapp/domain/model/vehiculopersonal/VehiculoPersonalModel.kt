@@ -14,7 +14,7 @@ import com.application.carlosgarro.mygarageapp.domain.model.vehiculo.toModel
 import java.time.LocalDate
 
 data class VehiculoPersonalModel(
-    val id: Long? = 0L,
+    val id: Long = 0L,
     val usuarioEmail: String = "",
     var modelo: VehiculoModel = VehiculoModel(0L, MarcaVehiculo.HONDA, ModeloVehiculo.CIVIC),
     var anyo: Int = 0,
@@ -74,7 +74,8 @@ fun VehiculoPersonalModel.toEntity(): VehiculoPersonalEntity {
         kilometros = kilometros,
         imagen = imagen,
         id = id?: 0L,
-        fechaUltModificacion = LocalDate.now() // Uncomment if you want to set the current date as default
+        fechaUltModificacion = LocalDate.now().toString(),
+        borrado = false
     )
 }
 

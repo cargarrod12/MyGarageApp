@@ -8,9 +8,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +22,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.SaveAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -43,6 +47,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.application.carlosgarro.mygarageapp.domain.model.notificacion.NotificacionModel
 import com.application.carlosgarro.mygarageapp.presentation.components.BottomBar
 import com.application.carlosgarro.mygarageapp.presentation.components.TopBar
+import com.application.carlosgarro.mygarageapp.presentation.components.TopBarViewModel
 import com.application.carlosgarro.mygarageapp.ui.theme.Blue
 
 @Composable
@@ -52,8 +57,12 @@ fun NotificacionesScreen(
     viewModel: NotificacionesViewModel = hiltViewModel(),
     navigateToHome: () -> Unit = {},
     navigateToMapa: () -> Unit = {},
+    navigateToInitial: () -> Unit = {},
+    topBarViewModel: TopBarViewModel = hiltViewModel(),
+    navigateToConsejo: () -> Unit = {},
 ) {
     val notificaciones = viewModel.notificaciones.observeAsState(emptyList()).value
+    val isLoading by viewModel.isLoading.observeAsState(true)
 
     LaunchedEffect(vehiculoId) {
         Log.i("ID", "ID: $vehiculoId")
@@ -73,10 +82,10 @@ fun NotificacionesScreen(
 
     Scaffold(
         topBar = {
-            TopBar()
+            TopBar(topBarViewModel, navigateToInitial)
         },
         bottomBar = {
-            BottomBar(0,navigateToHome, navigateToMapa)
+            BottomBar(0,navigateToHome, navigateToMapa,navigateToConsejo)
         },
     ) { padding ->
         Column(
@@ -110,7 +119,22 @@ fun NotificacionesScreen(
                 style = MaterialTheme.typography.titleMedium,
             )
 
-            TablaNotificaciones(notificaciones, viewModel)
+            if(isLoading){
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(64.dp),
+                        color = Color.Blue
+                    )
+                    Spacer(modifier = Modifier.height(8.dp)) // Espacio entre círculo y texto
+                    Text("Cargando datos...", color = Color.Black)
+                }
+            }else TablaNotificaciones(notificaciones, viewModel)
 
 
         }

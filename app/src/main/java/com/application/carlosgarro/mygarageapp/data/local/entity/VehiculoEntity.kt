@@ -11,11 +11,14 @@ import com.application.carlosgarro.mygarageapp.data.local.Converters
 @Entity(tableName = "vehiculo")
 data class VehiculoEntity(
 
-    @PrimaryKey val id: Long,
+    @PrimaryKey override val id: Long,
     @TypeConverters(Converters::class)
     @ColumnInfo(name = "marca")
     val marca: MarcaVehiculo,
     @TypeConverters(Converters::class)
     @ColumnInfo(name = "modelo")
     val modelo: ModeloVehiculo
-)
+): DatosGeneralesEntity{
+
+    constructor(): this(0L, MarcaVehiculo.HONDA, ModeloVehiculo.CIVIC)
+}

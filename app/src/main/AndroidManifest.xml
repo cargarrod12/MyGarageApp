@@ -4,8 +4,10 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
-        android:name=".App"
+        android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,7 +20,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.MyGarageApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +27,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <provider
+            android:authorities="${applicationId}.androidx-star-up"
+            android:name="androidx.startup.InitializationProvider"
+            tools:replace="android:authorities"
+            tools:node="remove"/>
     <meta-data
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyCutJNZF5FUiDyd0KnSym4NlDnK01g9hV0" />

@@ -23,7 +23,7 @@ import com.application.carlosgarro.mygarageapp.core.enums.TipoServicio
 data class ReglaMantenimientoEntity(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
+    override val id: Long = 0L,
 
     val vehiculoId: Long,
 
@@ -32,4 +32,9 @@ data class ReglaMantenimientoEntity(
     val intervalo: Int,
 
 
-)
+    ): DatosGeneralesEntity{
+
+        constructor(): this(0L, 0L, TipoServicio.OTRO, 200 )
+    }
+
+

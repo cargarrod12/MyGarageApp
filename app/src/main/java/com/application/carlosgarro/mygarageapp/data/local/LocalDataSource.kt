@@ -7,6 +7,7 @@ import com.application.carlosgarro.mygarageapp.data.local.dao.ConsejoDAO
 import com.application.carlosgarro.mygarageapp.data.local.dao.MantenimientoDAO
 import com.application.carlosgarro.mygarageapp.data.local.dao.NotificacionDAO
 import com.application.carlosgarro.mygarageapp.data.local.dao.ReglaMantenimientoDAO
+import com.application.carlosgarro.mygarageapp.data.local.dao.UsuarioDAO
 import com.application.carlosgarro.mygarageapp.data.local.dao.VehiculoDAO
 import com.application.carlosgarro.mygarageapp.data.local.dao.VehiculoPersonalDAO
 import com.application.carlosgarro.mygarageapp.data.local.entity.ConsejoEntity
@@ -27,7 +28,7 @@ import com.application.carlosgarro.mygarageapp.data.local.entity.VehiculoPersona
         ReglaMantenimientoEntity::class,
         ConsejoEntity::class
                ],
-    version = 13,
+    version = 14,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -44,5 +45,7 @@ abstract  class LocalDataSource : RoomDatabase() {
     abstract fun notificacionDAO(): NotificacionDAO
 
     abstract fun consejoDAO(): ConsejoDAO
+
+    abstract fun usuarioDAO(): UsuarioDAO
 
 }
