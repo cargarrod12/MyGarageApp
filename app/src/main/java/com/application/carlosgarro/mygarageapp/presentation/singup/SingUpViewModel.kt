@@ -40,13 +40,11 @@ class SingUpViewModel @Inject constructor(
                     if (task.isSuccessful) {
                         insertUsuario(email,password)
                         navigateToHome()
-//                        Log.i("REGISTRO", "REGISTRO OK")
                     } else {
                         _isLoading.value = false
                         when (val exception = task.exception) {
                             is FirebaseAuthUserCollisionException -> {
                                 // El email ya está en uso
-//                                Log.i("REGISTRO", "El correo ya está en uso")
                                 Toast.makeText(
                                     context,
                                     "El correo ya está en uso",
@@ -56,7 +54,6 @@ class SingUpViewModel @Inject constructor(
 
                             is FirebaseAuthWeakPasswordException -> {
                                 // La contraseña es muy débil
-//                                Log.i("REGISTRO", "Contraseña débil")
                                 Toast.makeText(
                                     context,
                                     "La contraseña es demasiado débil",
@@ -66,15 +63,11 @@ class SingUpViewModel @Inject constructor(
 
                             is FirebaseAuthInvalidCredentialsException -> {
                                 // Email con formato inválido
-//                                Log.i("REGISTRO", "Email inválido")
                                 Toast.makeText(context, "El email no es válido", Toast.LENGTH_LONG)
                                     .show()
                             }
 
                             else -> {
-
-                                // Otro error
-//                                Log.i("REGISTRO", "Error desconocido: ${exception?.message}")
                                 Toast.makeText(
                                     context,
                                     "Error realizar el registro. Por favor, intntelo de nuevo más tarde",

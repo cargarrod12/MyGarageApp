@@ -61,9 +61,9 @@ fun InitialScreen(navigateToLogin: () -> Unit = {}, navigateToSignUp: () -> Unit
             fontWeight = FontWeight.Bold,
             style = TextStyle(
                 shadow = Shadow(
-                    color = Color.Black, // Color de la sombra
-                    offset = Offset(4f, 4f), // Desplazamiento de la sombra (X, Y)
-                    blurRadius = 8f // Radio de desenfoque
+                    color = Color.Black,
+                    offset = Offset(4f, 4f),
+                    blurRadius = 8f
                 )
             )
         )
@@ -74,9 +74,9 @@ fun InitialScreen(navigateToLogin: () -> Unit = {}, navigateToSignUp: () -> Unit
             fontWeight = FontWeight.Bold,
             style = TextStyle(
                 shadow = Shadow(
-                    color = Color.Black, // Color de la sombra
-                    offset = Offset(4f, 4f), // Desplazamiento de la sombra (X, Y)
-                    blurRadius = 8f // Radio de desenfoque
+                    color = Color.Black,
+                    offset = Offset(4f, 4f),
+                    blurRadius = 8f
                 )
             )
         )
@@ -99,17 +99,7 @@ fun InitialScreen(navigateToLogin: () -> Unit = {}, navigateToSignUp: () -> Unit
             },
             )
         Spacer(modifier = Modifier.height(8.dp))
-//        CustomButton(
-//            modifier = Modifier.clickable {  },
-//            painter = painterResource(id = R.drawable.google),
-//            title = "Continuar con Google"
-//        )
-//        Spacer(modifier = Modifier.height(8.dp))
-//        CustomButton(
-//            modifier = Modifier.clickable {  },
-//            painter = painterResource(id = R.drawable.facebook),
-//            title = "Continuar con Facebook"
-//        )
+
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "Iniciar sesión",
@@ -120,8 +110,8 @@ fun InitialScreen(navigateToLogin: () -> Unit = {}, navigateToSignUp: () -> Unit
             textDecoration = TextDecoration.Underline,
             style = TextStyle(
                 shadow = Shadow(
-                    color = Gray, // Color de la sombra
-                    offset = Offset(2f, 2f), // Desplazamiento de la sombra (X, Y
+                    color = Gray,
+                    offset = Offset(2f, 2f),
                 )
             )
         )

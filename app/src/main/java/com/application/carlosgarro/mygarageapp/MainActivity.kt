@@ -39,7 +39,6 @@ class MainActivity : ComponentActivity() {
             navHostController = rememberNavController()
 
             MyGarageAppTheme  {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -68,13 +67,11 @@ class MainActivity : ComponentActivity() {
                 }
 
                 shouldShowRequestPermissionRationale(permiso) -> {
-                    // Puedes mostrar un diálogo aquí si quieres explicar por qué
                     Log.i("MainActivity", "Se debe mostrar una justificación para el permiso de notificaciones")
                     requestNotificationPermissionLauncher.launch(permiso)
                 }
 
                 else -> {
-                    // Solicita el permiso directamente
                     Log.i("MainActivity", "Solicitando permiso de notificaciones")
                     requestNotificationPermissionLauncher.launch(permiso)
                 }

@@ -102,7 +102,6 @@ class ResumenViewModel @Inject constructor(
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
-                            //Log.i("NUEVO VEHICULO", "AÑADIENDO NUEVO VEHICULO: $data")
                         }
                         is Resource.Success -> {
                             _isLoading.value = false

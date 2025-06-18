@@ -178,7 +178,7 @@ fun HistorialScreen(
                         modifier = Modifier.size(64.dp),
                         color = Color.Blue
                     )
-                    Spacer(modifier = Modifier.height(8.dp)) // Espacio entre círculo y texto
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text("Cargando datos...", color = Color.Black)
                 }
             }else HistorialTab(padding = padding, nombreVehiculo = vehiculo, mantenimientos = mantenimientos)

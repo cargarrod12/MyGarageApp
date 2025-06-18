@@ -71,7 +71,7 @@ fun SignUpScreen(
     var passwordVisible by remember { mutableStateOf(false) }
     val isLoading by viewModel.isLoading.observeAsState(false)
 
-    var context = LocalContext.current
+    val context = LocalContext.current
 
     if (isLoading) {
         CircularProgressIndicator(
@@ -101,9 +101,9 @@ fun SignUpScreen(
                 "Email", color = White, fontWeight = FontWeight.Bold, fontSize = 30.sp,
                 style = TextStyle(
                     shadow = Shadow(
-                        color = Color.Black, // Color de la sombra
-                        offset = Offset(4f, 4f), // Desplazamiento de la sombra (X, Y)
-                        blurRadius = 8f // Radio de desenfoque
+                        color = Color.Black,
+                        offset = Offset(4f, 4f),
+                        blurRadius = 8f
                     )
                 )
             )
@@ -124,9 +124,9 @@ fun SignUpScreen(
                 fontSize = 30.sp,
                 style = TextStyle(
                     shadow = Shadow(
-                        color = Color.Black, // Color de la sombra
-                        offset = Offset(4f, 4f), // Desplazamiento de la sombra (X, Y)
-                        blurRadius = 8f // Radio de desenfoque
+                        color = Color.Black,
+                        offset = Offset(4f, 4f),
+                        blurRadius = 8f
                     )
                 )
             )
@@ -154,9 +154,9 @@ fun SignUpScreen(
                 fontSize = 30.sp,
                 style = TextStyle(
                     shadow = Shadow(
-                        color = Color.Black, // Color de la sombra
-                        offset = Offset(4f, 4f), // Desplazamiento de la sombra (X, Y)
-                        blurRadius = 8f // Radio de desenfoque
+                        color = Color.Black,
+                        offset = Offset(4f, 4f),
+                        blurRadius = 8f
                     )
                 )
             )

@@ -56,12 +56,12 @@ class LoginViewModelTest {
  fun setup() {
     MockKAnnotations.init(this)
   loginViewModel = LoginViewModel(usuarioDAO, firestoreService)
-  Dispatchers.setMain(testDispatcher) // Use Unconfined for testing
+  Dispatchers.setMain(testDispatcher)
  }
 
  @After
     fun tearDown() {
-    Dispatchers.resetMain() // Reset the main dispatcher after tests
+    Dispatchers.resetMain()
     }
 
  @Test
@@ -102,32 +102,5 @@ class LoginViewModelTest {
   verify { navigateToHome.invoke() }
  }
 
-
-
-// @Test
-// fun `login with invalid credentials should show error`() = runTest {
-//  val email = "wrong@example.com"
-//  val password = "wrongPassword"
-//
-//  val exception = FirebaseAuthInvalidCredentialsException("ERROR", "Invalid credentials")
-//
-//  val mockTask = mockk<com.google.android.gms.tasks.Task<AuthResult>>(relaxed = true)
-//  every { mockTask.isSuccessful } returns false
-//  every { mockTask.exception } returns exception
-//
-//  every { mockTask.addOnCompleteListener(any()) } answers {
-//   firstArg<com.google.android.gms.tasks.OnCompleteListener<AuthResult>>()
-//    .onComplete(mockTask)
-//   mockTask
-//  }
-//
-//  every { firebaseAuth.signInWithEmailAndPassword(email, password) } returns mockTask
-//
-//  loginViewModel.login(firebaseAuth, email, password, context, navigateToHome)
-//
-//  testDispatcher.scheduler.runCurrent()
-//
-//  assertEquals(false, loginViewModel.isLoading.value)
-// }
 
 }

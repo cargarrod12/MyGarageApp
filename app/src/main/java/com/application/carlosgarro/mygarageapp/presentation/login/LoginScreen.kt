@@ -107,9 +107,9 @@ fun LoginScreen(
                 fontSize = 40.sp,
                 style = TextStyle(
                     shadow = Shadow(
-                        color = Color.Black, // Color de la sombra
-                        offset = Offset(4f, 4f), // Desplazamiento de la sombra (X, Y)
-                        blurRadius = 8f // Radio de desenfoque
+                        color = Color.Black,
+                        offset = Offset(4f, 4f),
+                        blurRadius = 8f
                     )
                 )
             )
@@ -130,9 +130,9 @@ fun LoginScreen(
                 fontSize = 40.sp,
                 style = TextStyle(
                     shadow = Shadow(
-                        color = Color.Black, // Color de la sombra
-                        offset = Offset(4f, 4f), // Desplazamiento de la sombra (X, Y)
-                        blurRadius = 8f // Radio de desenfoque
+                        color = Color.Black,
+                        offset = Offset(4f, 4f),
+                        blurRadius = 8f
                     )
                 )
             )

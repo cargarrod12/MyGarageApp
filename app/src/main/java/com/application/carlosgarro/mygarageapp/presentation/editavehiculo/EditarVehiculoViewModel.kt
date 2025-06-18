@@ -52,36 +52,29 @@ class EditarVehiculoViewModel @Inject constructor(
     private fun cargaVechiculo() {
         viewModelScope.launch {
             if (_vehiculoId.value != null) {
-                //Log.i("PANTALLA ACTUALIZAR VEHICULO", "ID: ${_vehiculoId.value}")
                 getVehiculoByIdUseCase(_vehiculoId.value!!).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
-                            //Log.i("PANTALLA ACTUALIZAR VEHICULO", "Loading VehiculosPersonalesByUSer: ${resource.data}")
                         }
 
                         is Resource.Success -> {
                             _vehiculo.value = resource.data ?: VehiculoPersonalModel()
                             _imagenSeleccionada.value = resource.data?.imagen
                             _isLoading.value = false
-                            //Log.i("PANTALLA ACTUALIZAR VEHICULO", "Success: ${resource.data}")
                         }
 
                         is Resource.Error -> {
                             _isLoading.value = false
-                            //Log.e("PANTALLA ACTUALIZAR VEHICULO", "Error: ${resource.message}")
                         }
                     }
                 }
-            } else {
-                //Log.i("RESUMEN", "ID: ${_vehiculoId.value}")
             }
 
         }
     }
 
     fun setImagenDesdeUri(context: Context, uri: Uri) {
-        //Log.i("Imagen", "Inicio de lectura de imagen desde URI: $uri")
         _imagenSeleccionadaUri.value = uri
         try {
             context.contentResolver.openInputStream(uri)?.use { input ->
@@ -89,7 +82,7 @@ class EditarVehiculoViewModel @Inject constructor(
                 _imagenSeleccionada.value = bytes
             }
         } catch (e: Exception) {
-            //Log.e("Imagen", "Error leyendo imagen", e)
+
         }
     }
 
@@ -102,22 +95,18 @@ class EditarVehiculoViewModel @Inject constructor(
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
-                            //Log.i("ACTUALIZAR VEHICULO", "AÑADIENDO NUEVO VEHICULO: $data")
                         }
                         is Resource.Success -> {
                             _isLoading.value = false
-                            //Log.i("ACTUALIZAR VEHICULO", "Success: VEHICULO AÑADIDO ${resource.data}")
                             _eventoMensaje.emit("Vehículo actualizado correctamente")
                         }
                         is Resource.Error -> {
                             _isLoading.value = false
-                            //Log.e("ACTUALIZAR VEHICULO", "Error: ${resource.message}")
                             _eventoMensaje.emit("Error al actualizar vehículo")
                         }
                     }
                 }
             }else {
-                //Log.e("ACTUALIZAR VEHICULO", "Error: Usuario no autenticado")
                 _eventoMensaje.emit("Error: Usuario no autenticado")
             }
         }
@@ -130,16 +119,13 @@ class EditarVehiculoViewModel @Inject constructor(
                 when (resource) {
                     is Resource.Loading -> {
                         _isLoading.value = true
-                        //Log.i("DELETE VEHICULO", "Eliminando VehiculoPersonal con ID: $vehiculoId")
                     }
                     is Resource.Success -> {
                         _isLoading.value = false
-                        //Log.i("DELETE VEHICULO", "Success: Vehículo eliminado correctamente")
                         _eventoMensaje.emit("Vehículo eliminado correctamente")
                     }
                     is Resource.Error -> {
                         _isLoading.value = false
-                        //Log.e("DELETE VEHICULO", "Error: ${resource.message}")
                         _eventoMensaje.emit("Error al eliminar vehículo")
                     }
                 }

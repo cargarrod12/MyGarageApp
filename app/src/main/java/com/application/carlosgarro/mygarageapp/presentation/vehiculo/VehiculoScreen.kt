@@ -113,7 +113,6 @@ fun VehiculoScreen(
 
 
                 Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-                    // Header Section
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -251,7 +250,7 @@ fun VehiculoScreen(
                                 labelAux = "Ult. Rev: ",
                                 aux = "${notificacion.kilometrosUltimoServicio}Km"
                             )
-                            Spacer(modifier = Modifier.height(5.dp)) // "
+                            Spacer(modifier = Modifier.height(5.dp))
                         }
 
                     }

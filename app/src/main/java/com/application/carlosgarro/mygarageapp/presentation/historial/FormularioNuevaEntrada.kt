@@ -169,7 +169,7 @@ fun FormularioConFecha(onFechaChange: (LocalDate) -> Unit = {}) {
 
     var fechaSeleccionada by remember { mutableStateOf("") }
 
-    // Crear el DatePickerDialog con una restricción de fecha máxima
+
     val datePickerDialog = remember {
         DatePickerDialog(
             context,
@@ -182,7 +182,6 @@ fun FormularioConFecha(onFechaChange: (LocalDate) -> Unit = {}) {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         ).apply {
-            // Establece el límite máximo como hoy
             datePicker.maxDate = System.currentTimeMillis()
         }
     }
@@ -201,7 +200,7 @@ fun FormularioConFecha(onFechaChange: (LocalDate) -> Unit = {}) {
                 onValueChange = {},
                 label = { Text("Fecha") },
                 readOnly = true,
-                enabled = false, // evita que el teclado se abra
+                enabled = false,
                 modifier = Modifier.fillMaxWidth()
             )
         }

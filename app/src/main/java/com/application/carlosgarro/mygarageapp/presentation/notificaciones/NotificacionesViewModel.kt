@@ -41,23 +41,19 @@ class NotificacionesViewModel @Inject constructor(
     private fun cargaNotificaciones() {
         viewModelScope.launch {
             if (_vehiculoId.value != null) {
-//                Log.i("PANTALLA NOTIFICACIONES", "ID: ${_vehiculoId.value}")
                 getNotificacionesByVehiculoPersonalIdUseCase(_vehiculoId.value!!).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
-//                            Log.i("PANTALLA NOTIFICACIONES", "Loading NOTIFICACIONES: ${resource.data}")
                         }
 
                         is Resource.Success -> {
                             _notificaciones.value = resource.data ?: emptyList()
                             _isLoading.value = false
-//                            Log.i("PANTALLA NOTIFICACIONES", "Success NOTIFICACIONES: ${resource.data}")
                         }
 
                         is Resource.Error -> {
                             _isLoading.value = false
-//                            Log.e("PANTALLA NOTIFICACIONES", "Error NOTIFICACIONES: ${resource.message}")
                         }
                     }
                 }
@@ -67,7 +63,6 @@ class NotificacionesViewModel @Inject constructor(
 
 
     fun updateNotificaciones(notificaciones: List<NotificacionModel>){
-//        Log.e("PANTALLA NOTIFICACIONES", "Lista Notificaciones a actualizar: $notificaciones" )
         viewModelScope.launch {
             updateNotificacionesUseCase(notificaciones).collect { resource ->
                 when (resource) {
@@ -77,17 +72,12 @@ class NotificacionesViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         _isLoading.value = false
-//                        Log.i(
-//                            "NUEVA ENTRADA HISTORIAL",
-//                            "Success: ENTRADA HISTORIAL AÑADIDA ${resource.data}"
-//                        )
                         cargaNotificaciones()
                         _eventoMensaje.emit("Notificaciones actualizadas correctamente")
                     }
 
                     is Resource.Error -> {
                         _isLoading.value = false
-//                        Log.e("NUEVA ENTRADA HISTORIAL", "Error: ${resource.message}")
                         _eventoMensaje.emit("Error al actualizar notificaciones")
                     }
                 }

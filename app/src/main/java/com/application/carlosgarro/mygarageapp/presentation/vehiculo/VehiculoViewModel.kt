@@ -35,28 +35,22 @@ class VehiculoViewModel @Inject constructor(
     private fun cargaVechiculo() {
         viewModelScope.launch {
             if (_vehiculoId.value != null) {
-                //Log.i("PANTALLA VEHICULO", "ID: ${_vehiculoId.value}")
                 getVehiculoByIdUseCase(_vehiculoId.value!!).collect { resource ->
                     when (resource) {
                         is Resource.Loading -> {
                             _isLoading.value = true
-                            //Log.i("PANTALLA VEHICULO", "Loading VehiculosPersonalesByUSer: ${resource.data}")
                         }
 
                         is Resource.Success -> {
                             _vehiculo.value = resource.data ?: VehiculoPersonalModel()
                             _isLoading.value = false
-                            //Log.i("PANTALLA VEHICULO", "Success: ${resource.data}")
                         }
 
                         is Resource.Error -> {
                             _isLoading.value = false
-                            //Log.e("PANTALLA VEHICULO", "Error: ${resource.message}")
                         }
                     }
                 }
-            } else {
-                //Log.i("RESUMEN", "ID: ${_vehiculoId.value}")
             }
 
         }
