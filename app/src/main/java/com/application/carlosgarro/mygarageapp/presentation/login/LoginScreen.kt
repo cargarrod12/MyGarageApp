@@ -59,8 +59,8 @@ fun LoginScreen(
     navigateToHome: () -> Unit = {},
     viewModel : LoginViewModel = hiltViewModel()
 ) {
-    var email by remember { mutableStateOf("prueba@prueba.com") }
-    var password by remember { mutableStateOf("prueba") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
     val isLoading by viewModel.isLoading.observeAsState(false)
@@ -74,10 +74,10 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CircularProgressIndicator(
-                modifier = Modifier.size(64.dp), // Cambia el tamaño aquí
+                modifier = Modifier.size(64.dp),
                 color = Color.Blue
             )
-            Spacer(modifier = Modifier.height(8.dp)) // Espacio entre círculo y texto
+            Spacer(modifier = Modifier.height(8.dp))
             Text("Recuperando datos...", color = Color.Black)
         }
 
