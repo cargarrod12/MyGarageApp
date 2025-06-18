@@ -5,13 +5,14 @@ MyGarageApp es una aplicación Android diseñada para ayudar a los usuarios a **
 
 ## 🎯 Características Principales
 - **📅 Gestión de Revisiones:** Guarda el historial de revisiones y programa y recibe notificaciones sobre mantenimiento de tus vehículos.
-- **🛠️ Búsqueda de Talleres Cercanos:** Encuentra servicios automotrices en tu área con integración de Google Maps.
-- **💬 Consultas Interactivas:** Pregunta sobre mecánica y revisiones a través de un sistema inteligente de asistencia.
+- **🛠️ Búsqueda de Talleres Cercanos:** Encuentra talleres cercanos a tu localizacion y consulta su informacion y reseñas.
+- **💬 Consultas Interactivas:** Pregunta sobre mecánica y revisiones a través de un sistema de consulta interactiva y personalizada.
 
 ## 🏗️ Tecnologías Utilizadas
 - **Kotlin** y **Jetpack Compose** para el desarrollo de la interfaz.
 - **WorkManager** para ejecutar tareas en segundo plano, como recordatorios de revisiones.
 - **Firebase Authentication** para el acceso seguro de usuarios.
+- **Firestore** como copia de seguridad en la nube
 - **Google Maps API** para mostrar ubicaciones de talleres cercanos.
 - **Hilt** para la gestión de dependencias.
 - **Room Database** para almacenar datos de los vehículos y sus mantenimientos.
@@ -23,11 +24,12 @@ MyGarageApp es una aplicación Android diseñada para ayudar a los usuarios a **
    
 ## 2. 📱 Abre el proyecto en Android Studio
 
-1. Abre **Android Studio**.
-2. Selecciona **"Open an existing project"** desde el menú inicial.
-3. Navega hasta la carpeta donde clonaste el repositorio.
-4. Selecciona la carpeta raíz del proyecto.
-5. Espera a que Gradle sincronice correctamente todas las dependencias.
+1. Instala **Android Studio**.
+2. Abre **Android Studio**.
+3. Selecciona **"Open an existing project"** desde el menú inicial.
+4. Navega hasta la carpeta donde clonaste el repositorio.
+5. Selecciona la carpeta raíz del proyecto.
+6. Espera a que Gradle sincronice correctamente todas las dependencias.
 
 > 💡 Asegúrate de tener instalada una versión compatible del SDK de Android (mínimo API 24) y habilitados los complementos de Kotlin, Jetpack Compose y Google Maps.
 
@@ -60,12 +62,10 @@ Una vez configurado todo correctamente, puedes ejecutar la aplicación siguiendo
 
 Esta aplicación Android permite al usuario gestionar de forma eficiente el mantenimiento y las revisiones de sus vehículos. A continuación se detallan las funcionalidades clave que ofrece:
 
-### 🚗 Gestión de vehículos
+### 🛠️ Módulo de revisiones
 - Registro de múltiples vehículos por usuario.
 - Visualización de información relevante como kilometraje, imagen y revisiones asociadas.
 - Edición de datos del vehículo (imagen, estado, kilómetros).
-
-### 🛠️ Módulo de revisiones
 - Visualización de revisiones próximas.
 - Historial de revisiones realizadas con opción de añadir nuevas entradas.
 - Recordatorios inteligentes de mantenimiento.
@@ -80,9 +80,6 @@ Esta aplicación Android permite al usuario gestionar de forma eficiente el mant
 - Consulta interactiva de dudas sobre revisiones o mantenimiento.
 - Respuestas personalizadas según el vehículo seleccionado.
 - Uso de la API de OpenAI para generar contenido relevante en tiempo real.
-
-### 🛡️ Seguridad y autenticación
-- Registro e inicio de sesión por email y contraseña.
 
 
 
